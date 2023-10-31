@@ -60,32 +60,32 @@ class FluxItemsServiceProvider extends ServiceProvider
     {
 
         $this->publishes([
-            __DIR__ . '/../database/migrations/check_banned_top_search_words_table.php.stub' => $this->getMigrationFileName('check_banned_top_search_words_table.php'),
-            __DIR__ . '/../database/migrations/check_catalog_item_table.php.stub' => $this->getMigrationFileName('check_catalog_item_table.php'),
-            __DIR__ . '/../database/migrations/check_complaint_reasons_table.php.stub' => $this->getMigrationFileName('check_complaint_reasons_table.php'),
-            __DIR__ . '/../database/migrations/check_complaint_item_table.php.stub' => $this->getMigrationFileName('check_complaint_item_table.php'),
-            __DIR__ . '/../database/migrations/check_conditions_table.php.stub' => $this->getMigrationFileName('check_conditions_table.php'),
-            __DIR__ . '/../database/migrations/check_favorite_item_table.php.stub' => $this->getMigrationFileName('check_favorite_item_table.php'),
-            __DIR__ . '/../database/migrations/check_image_item_table.php.stub' => $this->getMigrationFileName('check_image_item_table.php'),
-            __DIR__ . '/../database/migrations/check_item_city_table.php.stub' => $this->getMigrationFileName('check_item_city_table.php'),
-            __DIR__ . '/../database/migrations/check_protect_methods_table.php.stub' => $this->getMigrationFileName('check_protect_methods_table.php'),
-            __DIR__ . '/../database/migrations/check_receive_methods_table.php.stub' => $this->getMigrationFileName('check_receive_methods_table.php'),
-            __DIR__ . '/../database/migrations/check_protect_method_item_table.php.stub' => $this->getMigrationFileName('check_protect_method_item_table.php'),
-            __DIR__ . '/../database/migrations/check_receive_method_item_table.php.stub' => $this->getMigrationFileName('check_receive_method_item_table.php'),
-            __DIR__ . '/../database/migrations/check_rent_item_prices_table.php.stub' => $this->getMigrationFileName('check_rent_item_prices_table.php'),
-            __DIR__ . '/../database/migrations/check_rent_type_item_table.php.stub' => $this->getMigrationFileName('check_rent_type_item_table.php'),
-            __DIR__ . '/../database/migrations/check_return_methods_table.php.stub' => $this->getMigrationFileName('check_return_methods_table.php'),
-            __DIR__ . '/../database/migrations/check_return_method_item_table.php.stub' => $this->getMigrationFileName('check_return_method_item_table.php'),
-            __DIR__ . '/../database/migrations/check_top_items_table.php.stub' => $this->getMigrationFileName('check_top_items_table.php'),
-            __DIR__ . '/../database/migrations/check_view_history_item_table.php.stub' => $this->getMigrationFileName('check_view_history_item_table.php'),
-            __DIR__ . '/../database/migrations/check_items_table.php.stub' => $this->getMigrationFileName('check_items_table.php'),
+            __DIR__ . '/../database/migrations/check_banned_top_search_words_table.php.stub' => $this->getMigrationFileName(0,'check_banned_top_search_words_table.php'),
+            __DIR__ . '/../database/migrations/check_catalog_item_table.php.stub' => $this->getMigrationFileName(1,'check_catalog_item_table.php'),
+            __DIR__ . '/../database/migrations/check_complaint_reasons_table.php.stub' => $this->getMigrationFileName(2,'check_complaint_reasons_table.php'),
+            __DIR__ . '/../database/migrations/check_complaint_item_table.php.stub' => $this->getMigrationFileName(3,'check_complaint_item_table.php'),
+            __DIR__ . '/../database/migrations/check_conditions_table.php.stub' => $this->getMigrationFileName(4,'check_conditions_table.php'),
+            __DIR__ . '/../database/migrations/check_favorite_item_table.php.stub' => $this->getMigrationFileName(5,'check_favorite_item_table.php'),
+            __DIR__ . '/../database/migrations/check_image_item_table.php.stub' => $this->getMigrationFileName(6,'check_image_item_table.php'),
+            __DIR__ . '/../database/migrations/check_item_city_table.php.stub' => $this->getMigrationFileName(7,'check_item_city_table.php'),
+            __DIR__ . '/../database/migrations/check_protect_methods_table.php.stub' => $this->getMigrationFileName(8,'check_protect_methods_table.php'),
+            __DIR__ . '/../database/migrations/check_receive_methods_table.php.stub' => $this->getMigrationFileName(9,'check_receive_methods_table.php'),
+            __DIR__ . '/../database/migrations/check_protect_method_item_table.php.stub' => $this->getMigrationFileName(10,'check_protect_method_item_table.php'),
+            __DIR__ . '/../database/migrations/check_receive_method_item_table.php.stub' => $this->getMigrationFileName(11,'check_receive_method_item_table.php'),
+            __DIR__ . '/../database/migrations/check_rent_item_prices_table.php.stub' => $this->getMigrationFileName(12,'check_rent_item_prices_table.php'),
+            __DIR__ . '/../database/migrations/check_rent_type_item_table.php.stub' => $this->getMigrationFileName(13,'check_rent_type_item_table.php'),
+            __DIR__ . '/../database/migrations/check_return_methods_table.php.stub' => $this->getMigrationFileName(14,'check_return_methods_table.php'),
+            __DIR__ . '/../database/migrations/check_return_method_item_table.php.stub' => $this->getMigrationFileName(15,'check_return_method_item_table.php'),
+            __DIR__ . '/../database/migrations/check_top_items_table.php.stub' => $this->getMigrationFileName(16,'check_top_items_table.php'),
+            __DIR__ . '/../database/migrations/check_view_history_item_table.php.stub' => $this->getMigrationFileName(17,'check_view_history_item_table.php'),
+            __DIR__ . '/../database/migrations/check_items_table.php.stub' => $this->getMigrationFileName(18,'check_items_table.php'),
         ], 'flux-item-migrations');
     }
 
     /**
      * Returns existing migration file if found, else uses the current timestamp.
      */
-    protected function getMigrationFileName(string $migrationFileName): string
+    protected function getMigrationFileName($index,string $migrationFileName): string
     {
         $timestamp = date('Y_m_d_His');
 
@@ -93,7 +93,7 @@ class FluxItemsServiceProvider extends ServiceProvider
 
         return Collection::make([$this->app->databasePath() . DIRECTORY_SEPARATOR . 'migrations' . DIRECTORY_SEPARATOR])
             ->flatMap(fn($path) => $filesystem->glob($path . '*_' . $migrationFileName))
-            ->push($this->app->databasePath() . "/migrations/{$timestamp}_{$migrationFileName}")
+            ->push($this->app->databasePath() . "/migrations/{$timestamp}{$index}_{$migrationFileName}")
             ->first();
     }
 }
