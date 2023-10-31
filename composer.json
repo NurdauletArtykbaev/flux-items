@@ -20,7 +20,6 @@
         "filament/filament": "^2.16",
         "nurdaulet/flux-base": "dev-main",
         "nurdaulet/flux-catalog": "dev-main",
-        "laravel/framework": "^9.19",
         "illuminate/console": "^8.0|^9.0",
         "filament/spatie-laravel-translatable-plugin": "^2.17",
         "algolia/algoliasearch-client-php": "^3.3",
