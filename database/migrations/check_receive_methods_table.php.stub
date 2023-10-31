@@ -1,0 +1,57 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration {
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        if (Schema::hasTable('receive_methods')) {
+            $this->checkColumns();
+        } else {
+            Schema::create('receive_methods', function (Blueprint $table) {
+                $table->id();
+                $table->text('name')->nullable();
+                $table->tinyInteger('is_active')->default(1);
+                $table->softDeletes();
+                $table->timestamps();
+            });
+        }
+    }
+
+
+    private function checkColumns()
+    {
+        if (!Schema::hasColumn('receive_methods', 'name')) {
+            Schema::table('receive_methods', function (Blueprint $table) {
+                $table->text('name')->nullable();
+            });
+        }
+        if (!Schema::hasColumn('receive_methods', 'is_active')) {
+            Schema::table('receive_methods', function (Blueprint $table) {
+                $table->tinyInteger('is_active')->default(1);
+            });
+        }
+        if (!Schema::hasColumn('receive_methods', 'deleted_at')) {
+            Schema::table('receive_methods', function (Blueprint $table) {
+                $table->softDeletes();
+            });
+        }
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('receive_methods');
+    }
+};

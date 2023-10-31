@@ -1,0 +1,152 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration {
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        if (Schema::hasTable('items')) {
+            $this->checkColumns();
+        } else {
+            Schema::create('items', function (Blueprint $table) {
+                $table->id();
+                $table->string('name')->nullable();
+                $table->longText('description')->nullable();
+
+                $table->foreignId('condition_id')->constrained('conditions')->nullOnDelete();
+                $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+                $table->foreignId('city_id')->constrained('cities')->cascadeOnDelete();
+
+                $table->foreignId('store_id')->nullable()->constrained('stores')->cascadeOnDelete();
+
+                $table->text('address_name')->nullable();
+                $table->string('lat')->nullable();
+                $table->string('lng')->nullable();
+
+                $table->tinyInteger('status')->default(1);
+                $table->boolean('got_n8n')->default(false);
+                $table->boolean('is_busy')->default(false);
+                $table->string('slug');
+                $table->boolean('is_required_deposit')->default(0);
+                $table->float('today_delivery_price', 8, 2)->default(0);
+                $table->tinyInteger('is_hit')->default(0);
+                $table->tinyInteger('type')->default(\Nurdaulet\FluxItems\Helpers\ItemHelper::TYPE_RENT);
+                $table->softDeletes();
+                $table->timestamps();
+            });
+        }
+    }
+
+    private function checkColumns()
+    {
+        if (!Schema::hasColumn('items', 'name')) {
+            Schema::table('items', function (Blueprint $table) {
+                $table->string('name')->nullable();
+            });
+        }
+        if (!Schema::hasColumn('items', 'description')) {
+            Schema::table('items', function (Blueprint $table) {
+                $table->longText('description')->nullable();
+            });
+        }
+        if (!Schema::hasColumn('items', 'condition_id')) {
+            Schema::table('items', function (Blueprint $table) {
+                $table->foreignId('condition_id')->constrained('conditions')->nullOnDelete();
+            });
+        }
+        if (!Schema::hasColumn('items', 'user_id')) {
+            Schema::table('items', function (Blueprint $table) {
+                $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            });
+        }
+        if (!Schema::hasColumn('items', 'city_id')) {
+            Schema::table('items', function (Blueprint $table) {
+                $table->foreignId('city_id')->constrained('cities')->cascadeOnDelete();
+            });
+        }
+        if (!Schema::hasColumn('items', 'store_id')) {
+            Schema::table('items', function (Blueprint $table) {
+                $table->foreignId('store_id')->nullable()->constrained('stores')->cascadeOnDelete();
+            });
+        }
+        if (!Schema::hasColumn('items', 'address_name')) {
+            Schema::table('items', function (Blueprint $table) {
+                $table->text('address_name')->nullable();
+            });
+        }
+        if (!Schema::hasColumn('items', 'lat')) {
+            Schema::table('items', function (Blueprint $table) {
+                $table->string('lat')->nullable();
+            });
+        }
+        if (!Schema::hasColumn('items', 'lng')) {
+            Schema::table('items', function (Blueprint $table) {
+                $table->string('lng')->nullable();
+            });
+        }
+        if (!Schema::hasColumn('items', 'status')) {
+            Schema::table('items', function (Blueprint $table) {
+                $table->tinyInteger('status')->default(1);
+            });
+        }
+        if (!Schema::hasColumn('items', 'got_n8n')) {
+            Schema::table('items', function (Blueprint $table) {
+                $table->boolean('got_n8n')->default(false);
+            });
+        }
+
+        if (!Schema::hasColumn('items', 'is_busy')) {
+            Schema::table('items', function (Blueprint $table) {
+                $table->boolean('is_busy')->default(false);
+            });
+        }
+        if (!Schema::hasColumn('items', 'slug')) {
+            Schema::table('items', function (Blueprint $table) {
+                $table->string('slug');
+            });
+        }
+        if (!Schema::hasColumn('items', 'is_required_deposit')) {
+            Schema::table('items', function (Blueprint $table) {
+                $table->boolean('is_required_deposit')->default(0);
+            });
+        }
+        if (!Schema::hasColumn('items', 'today_delivery_price')) {
+            Schema::table('items', function (Blueprint $table) {
+                $table->float('today_delivery_price', 8, 2)->default(0);
+            });
+        }
+
+        if (!Schema::hasColumn('items', 'is_hit')) {
+            Schema::table('items', function (Blueprint $table) {
+                $table->tinyInteger('is_hit')->default(0);
+            });
+        }
+        if (!Schema::hasColumn('items', 'type')) {
+            Schema::table('items', function (Blueprint $table) {
+                $table->tinyInteger('type')->default(\Nurdaulet\FluxItems\Helpers\ItemHelper::TYPE_RENT);
+            });
+        }
+        if (!Schema::hasColumn('items', 'deleted_at')) {
+            Schema::table('items', function (Blueprint $table) {
+                $table->softDeletes();
+            });
+        }
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('items');
+    }
+};

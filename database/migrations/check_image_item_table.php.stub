@@ -1,0 +1,62 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration {
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        if (Schema::hasTable('image_item')) {
+            $this->checkColumns();
+        } else {
+            Schema::create('image_item', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('item_id')->constrained('items')->cascadeOnDelete();
+                $table->string('image')->nullable();
+                $table->string('webp')->nullable();
+                $table->timestamps();
+                $table->softDeletes();
+            });
+        }
+    }
+
+    private function checkColumns()
+    {
+        if (!Schema::hasColumn('image_item', 'item_id')) {
+            Schema::table('image_item', function (Blueprint $table) {
+                $table->foreignId('item_id')->constrained('items')->cascadeOnDelete();
+            });
+        }
+        if (!Schema::hasColumn('image_item', 'image')) {
+            Schema::table('image_item', function (Blueprint $table) {
+                $table->string('image')->nullable();
+            });
+        }
+        if (!Schema::hasColumn('image_item', 'webp')) {
+            Schema::table('image_item', function (Blueprint $table) {
+                $table->string('webp')->nullable();
+            });
+        }
+        if (!Schema::hasColumn('image_item', 'deleted_at')) {
+            Schema::table('image_item', function (Blueprint $table) {
+                $table->softDeletes();
+            });
+        }
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('image_item');
+    }
+};

@@ -1,0 +1,79 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration {
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        if (Schema::hasTable('complaint_item')) {
+            $this->checkColumns();
+        } else {
+            Schema::create('complaint_item', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('complaint_reason_id')->nullable()
+                    ->constrained('complaint_reasons')->nullOnDelete();
+                $table->foreignId('item_id')->constrained('items')->cascadeOnDelete();
+                $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+                $table->text('comment')->nullable();
+                $table->boolean('status')->default(true);
+                $table->softDeletes();
+                $table->timestamps();
+            });
+        }
+    }
+
+    private function checkColumns()
+    {
+        if (!Schema::hasColumn('complaint_item', 'complaint_reason_id')) {
+            Schema::table('complaint_item', function (Blueprint $table) {
+                $table->foreignId('complaint_reason_id')->nullable()
+                    ->constrained('complaint_reasons')->nullOnDelete();
+            });
+        }
+        if (!Schema::hasColumn('complaint_item', 'item_id')) {
+            Schema::table('complaint_item', function (Blueprint $table) {
+                $table->foreignId('item_id')->constrained('items')->cascadeOnDelete();
+            });
+        }
+        if (!Schema::hasColumn('complaint_item', 'user_id')) {
+            Schema::table('complaint_item', function (Blueprint $table) {
+                $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            });
+        }
+
+        if (!Schema::hasColumn('complaint_item', 'comment')) {
+            Schema::table('complaint_item', function (Blueprint $table) {
+                $table->text('comment')->nullable();
+            });
+        }
+
+        if (!Schema::hasColumn('complaint_item', 'status')) {
+            Schema::table('complaint_item', function (Blueprint $table) {
+                $table->boolean('status')->default(true);
+            });
+        }
+
+        if (!Schema::hasColumn('complaint_item', 'deleted_at')) {
+            Schema::table('complaint_item', function (Blueprint $table) {
+                $table->softDeletes();
+            });
+        }
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('complaint_item');
+    }
+};

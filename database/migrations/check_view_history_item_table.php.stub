@@ -1,0 +1,63 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration {
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        if (Schema::hasTable('view_history_item')) {
+            $this->checkColumns();
+        } else {
+            Schema::create('view_history_item', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('item_id')->constrained('items')->cascadeOnDelete();
+                $table->integer('count')->default(0);
+                $table->integer('favorite_count')->default(0);
+                $table->bigInteger('view_phone_count')->default(0);
+                $table->timestamps();
+                $table->softDeletes();
+            });
+        }
+    }
+
+    private function checkColumns()
+    {
+        if (!Schema::hasColumn('view_history_item', 'item_id')) {
+            Schema::table('view_history_item', function (Blueprint $table) {
+                $table->foreignId('item_id')->constrained('items')->cascadeOnDelete();
+            });
+        }
+        if (!Schema::hasColumn('view_history_item', 'count')) {
+            Schema::table('view_history_item', function (Blueprint $table) {
+                $table->integer('count')->default(0);
+            });
+        }
+        if (!Schema::hasColumn('view_history_item', 'favorite_count')) {
+            Schema::table('view_history_item', function (Blueprint $table) {
+                $table->integer('favorite_count')->default(0);
+            });
+        }
+        if (!Schema::hasColumn('view_history_item', 'view_phone_count')) {
+            Schema::table('view_history_item', function (Blueprint $table) {
+                $table->bigInteger('view_phone_count')->default(0);
+            });
+        }
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('view_history_item');
+    }
+};

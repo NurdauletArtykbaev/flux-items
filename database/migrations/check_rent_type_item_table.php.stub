@@ -1,0 +1,50 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration {
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        if (Schema::hasTable('rent_type_item')) {
+            $this->checkColumns();
+        } else {
+            Schema::create('rent_type_item', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('rent_type_id')->constrained('rent_types')->cascadeOnDelete();
+                $table->foreignId('item_id')->constrained('items')->cascadeOnDelete();
+                $table->timestamps();
+            });
+        }
+    }
+
+    private function checkColumns()
+    {
+        if (!Schema::hasColumn('rent_type_item', 'rent_type_id')) {
+            Schema::table('rent_type_item', function (Blueprint $table) {
+                $table->foreignId('rent_type_id')->constrained('rent_types')->cascadeOnDelete();
+            });
+        }
+        if (!Schema::hasColumn('rent_type_item', 'item_id')) {
+            Schema::table('rent_type_item', function (Blueprint $table) {
+                $table->foreignId('item_id')->constrained('items')->cascadeOnDelete();
+            });
+        }
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('rent_type_item');
+    }
+};

@@ -1,0 +1,51 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration {
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        if (Schema::hasTable('top_items')) {
+            $this->checkColumns();
+        } else {
+            Schema::create('top_items', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('city_id')->constrained('cities')->cascadeOnDelete();
+                $table->foreignId('item_id')->constrained('items')->cascadeOnDelete();
+                $table->timestamps();
+                $table->softDeletes();
+            });
+        }
+    }
+
+    private function checkColumns()
+    {
+        if (!Schema::hasColumn('top_items', 'city_id')) {
+            Schema::table('top_items', function (Blueprint $table) {
+                $table->foreignId('city_id')->constrained('cities')->cascadeOnDelete();
+            });
+        }
+        if (!Schema::hasColumn('top_items', 'item_id')) {
+            Schema::table('top_items', function (Blueprint $table) {
+                $table->foreignId('item_id')->constrained('items')->cascadeOnDelete();
+            });
+        }
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('top_items');
+    }
+};

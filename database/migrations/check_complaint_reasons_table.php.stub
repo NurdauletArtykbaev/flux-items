@@ -1,0 +1,69 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration {
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        if (Schema::hasTable('complaint_reasons')) {
+            $this->checkColumns();
+        } else {
+            Schema::create('complaint_reasons', function (Blueprint $table) {
+                $table->id();
+                $table->text('name')->nullable();
+                $table->tinyInteger('status')->default(1);
+                $table->string('sort')->nullable();
+                $table->boolean('is_for_user')->default(false);
+                $table->softDeletes();
+                $table->timestamps();
+            });
+        }
+    }
+
+    private function checkColumns()
+    {
+        if (!Schema::hasColumn('complaint_reasons', 'name')) {
+            Schema::table('complaint_reasons', function (Blueprint $table) {
+                $table->text('name')->nullable();
+            });
+        }
+        if (!Schema::hasColumn('complaint_reasons', 'status')) {
+            Schema::table('complaint_reasons', function (Blueprint $table) {
+                $table->tinyInteger('status')->default(1);
+            });
+        }
+        if (!Schema::hasColumn('complaint_reasons', 'sort')) {
+            Schema::table('complaint_reasons', function (Blueprint $table) {
+                $table->string('sort')->nullable();
+            });
+        }
+
+        if (!Schema::hasColumn('complaint_reasons', 'is_for_user')) {
+            Schema::table('complaint_reasons', function (Blueprint $table) {
+                $table->boolean('is_for_user')->default(false);
+            });
+        }
+        if (!Schema::hasColumn('complaint_reasons', 'deleted_at')) {
+            Schema::table('complaint_reasons', function (Blueprint $table) {
+                $table->softDeletes();
+            });
+        }
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('complaint_reasons');
+    }
+};

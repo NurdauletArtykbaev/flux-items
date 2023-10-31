@@ -1,0 +1,40 @@
+{
+    "name": "nurdaulet/flux-items",
+    "description": "Base provider",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Nurdaulet",
+            "email": "artykbaev.nurdaulet@mail.ru"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Nurdaulet\\FluxItems\\": "src/"
+        }
+    },
+    "require": {
+        "php": "^8.0",
+        "spatie/laravel-translatable": "^6.5",
+        "staudenmeir/laravel-adjacency-list": "^1.0",
+        "filament/filament": "^2.16",
+        "nurdaulet/flux-base": "dev-main",
+        "nurdaulet/flux-catalog": "dev-main",
+        "laravel/framework": "^9.19",
+        "filament/spatie-laravel-translatable-plugin": "^2.17",
+        "algolia/algoliasearch-client-php": "^3.3",
+        "algolia/scout-extended": "^2.0"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Nurdaulet\\FluxItems\\FluxItemsServiceProvider",
+                "Nurdaulet\\FluxItems\\FluxItemsFilamentServiceProvider"
+            ],
+            "aliases": {
+                "TextConverter": "Nurdaulet\\FluxItems\\Facades\\TextConverter",
+                "StringFormatter": "Nurdaulet\\FluxItems\\Facades\\StringFormatter"
+            }
+        }
+    }
+}
