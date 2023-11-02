@@ -20,7 +20,7 @@ return new class extends Migration {
                 $table->string('name')->nullable();
                 $table->longText('description')->nullable();
 
-                $table->foreignId('condition_id')->constrained('conditions')->nullOnDelete();
+                $table->foreignId('condition_id')->nullable()->constrained('conditions')->nullOnDelete();
                 $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
                 $table->foreignId('city_id')->constrained('cities')->cascadeOnDelete();
 

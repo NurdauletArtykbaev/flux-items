@@ -19,8 +19,8 @@
         "spatie/laravel-translatable": "^6.5",
         "staudenmeir/laravel-adjacency-list": "^1.0",
         "filament/filament": "^2.16",
-        "nurdaulet/flux-base": "*",
-        "nurdaulet/flux-catalog": "*",
+        "nurdaulet/flux-base": "^*",
+        "nurdaulet/flux-catalog": "^*",
         "filament/spatie-laravel-translatable-plugin": "^2.17",
         "algolia/algoliasearch-client-php": "*",
         "algolia/scout-extended": "*"

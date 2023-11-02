@@ -17,7 +17,7 @@ return new class extends Migration {
         } else {
             Schema::create('protect_method_item', function (Blueprint $table) {
                 $table->id();
-                $table->foreignId('protect_method_id')->constrained('protect_methods')->nullOnDelete();
+                $table->foreignId('protect_method_id')->nullable()->constrained('protect_methods')->nullOnDelete();
                 $table->foreignId('item_id')->constrained('items')->cascadeOnDelete();
                 $table->softDeletes();
                 $table->timestamps();
@@ -29,7 +29,7 @@ return new class extends Migration {
     {
         if (!Schema::hasColumn('protect_method_item', 'protect_method_id')) {
             Schema::table('protect_method_item', function (Blueprint $table) {
-                $table->foreignId('protect_method_id')->constrained('protect_methods')->nullOnDelete();
+                $table->foreignId('protect_method_id')->nullable()->constrained('protect_methods')->nullOnDelete();
             });
         }
         if (!Schema::hasColumn('protect_method_item', 'item_id')) {
