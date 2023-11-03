@@ -51,9 +51,9 @@ class FluxItemsServiceProvider extends ServiceProvider
         ], 'flux-items-config');
 
 
-        if (!file_exists(config_path('flux-items.php'))) {
-            Artisan::call('vendor:publish', ['--tag' => 'flux-items-config']);
-        }
+//        if (!file_exists(config_path('flux-items.php'))) {
+//            Artisan::call('vendor:publish', ['--tag' => 'flux-items-config']);
+//        }
     }
 
     protected function publishMigrations()

@@ -12,7 +12,18 @@ php artisan vendor:publish --tag=flux-items-config
 php artisan vendor:publish --provider="Nurdaulet\FluxCatalog\FluxCatalogServiceProvider"
 php artisan vendor:publish --provider="Nurdaulet\FluxBase\FluxBaseServiceProvider"
 php artisan vendor:publish --provider="Nurdaulet\FluxItems\FluxItemsServiceProvider"
+php artisan vendor:publish --tag flux-catalog-config
+php artisan vendor:publish --tag flux-base-config
+php artisan vendor:publish --tag flux-items-config
 
+```
+
+Вы можете самостоятельно добавить поставщика услуг административной панели Filament в файл config/app.php.
+``` php
+'providers' => [
+    // ...
+    Nurdaulet\FluxItems\FluxItemsFilamentServiceProvider::class,
+];
 ```
 
 
