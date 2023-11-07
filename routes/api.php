@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('api')->group(function () {
     Route::get('top-searches', [SearchController::class, 'topSearches']);
-    Route::get('promotion-groups', [PromotionGroupController::class, 'index']);
+    Route::apiResource('promotion-groups', PromotionGroupController::class)->only(['index', 'show']);
     Route::group(['prefix' => 'methods'], function () {
         Route::get('protect', ProtectMethodController::class);
         Route::get('receive', ReceiveMethodController::class);
