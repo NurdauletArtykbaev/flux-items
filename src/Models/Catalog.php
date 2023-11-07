@@ -46,6 +46,10 @@ class Catalog extends Model
         return $this->belongsTo(self::class);
     }
 
+    public function items()
+    {
+        return $this->belongsToMany(Item::class, 'catalog_item', 'catalog_id', 'item_id');
+    }
 
     public function scopeActive($query)
     {

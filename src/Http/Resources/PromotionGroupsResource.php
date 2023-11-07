@@ -23,9 +23,10 @@ class PromotionGroupsResource extends JsonResource
                 return new CatalogResource($this->catalog);
             }),
             'catalogs' => $this->whenLoaded('catalogs', function () {
-                return $this->catalogs;
+                return CatalogResource::collection($this->catalogs);
             }),
             'banner_title' => $this->banner_title,
+            'sort' => $this->sort,
             'banner_position_left' => $this->banner_position_left,
             'banner_bg_color' => $this->banner_bg_color,
             'banner_image' => $this->banner_image,

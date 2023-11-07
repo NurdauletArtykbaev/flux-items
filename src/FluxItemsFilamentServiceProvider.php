@@ -28,6 +28,7 @@ class FluxItemsFilamentServiceProvider extends PluginServiceProvider
         PromotionGroupResource::class,
     ];
 
+
     public function configurePackage(Package $package): void
     {
         $this->packageConfiguring($package);
