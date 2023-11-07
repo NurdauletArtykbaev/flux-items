@@ -14,6 +14,7 @@ use Laravel\Scout\Searchable;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
+
 class Item extends Model
 {
     use HasFactory, Reviewable, Searchable, SoftDeletes, HasFilters;

@@ -4,13 +4,13 @@ namespace Nurdaulet\FluxItems\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class ImageItem extends Model
+class ImageItem extends Pivot
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = 'image_items';
     protected $guarded = ['id'];
 
     protected $appends = ['full_url', 'webp_full_url'];

@@ -23,6 +23,7 @@
         "nurdaulet/flux-catalog": "*",
         "filament/spatie-laravel-translatable-plugin": "^2.17",
         "algolia/algoliasearch-client-php": "*",
+        "awobaz/compoships": "^2.2",
         "algolia/scout-extended": "*"
     },
     "extra": {

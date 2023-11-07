@@ -6,6 +6,7 @@ return [
         'item' => 'items',
     ],
     'models' => [
+        'promotion_group' => \Nurdaulet\FluxItems\Models\PromotionGroup::class,
         'item' => \Nurdaulet\FluxItems\Models\Item::class,
         'favorite_item' => \Nurdaulet\FluxItems\Models\FavoriteItem::class,
         'banned_top_search_word' => \Nurdaulet\FluxItems\Models\BannedTopSearchWord::class,

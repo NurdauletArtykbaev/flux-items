@@ -33,7 +33,7 @@ return new class extends Migration {
                 $table->tinyInteger('status')->default(1);
                 $table->boolean('got_n8n')->default(false);
                 $table->boolean('is_busy')->default(false);
-                $table->string('slug');
+                $table->string('slug')->nullable();
                 $table->boolean('is_required_deposit')->default(0);
                 $table->float('today_delivery_price', 8, 2)->default(0);
                 $table->tinyInteger('is_hit')->default(0);

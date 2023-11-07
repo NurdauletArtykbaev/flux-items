@@ -11,11 +11,13 @@ use Nurdaulet\FluxItems\Http\Controllers\ProtectMethodController;
 use Nurdaulet\FluxItems\Http\Controllers\ReceiveMethodController;
 use Nurdaulet\FluxItems\Http\Controllers\ReturnMethodController;
 use Nurdaulet\FluxItems\Http\Controllers\ConditionController;
+use Nurdaulet\FluxItems\Http\Controllers\PromotionGroupController;
 use Illuminate\Support\Facades\Route;
 
 
 Route::prefix('api')->group(function () {
     Route::get('top-searches', [SearchController::class, 'topSearches']);
+    Route::get('promotion-groups', [PromotionGroupController::class, 'index']);
     Route::group(['prefix' => 'methods'], function () {
         Route::get('protect', ProtectMethodController::class);
         Route::get('receive', ReceiveMethodController::class);

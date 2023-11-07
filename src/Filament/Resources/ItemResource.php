@@ -53,12 +53,12 @@ class ItemResource extends Resource
                     }),
                 Forms\Components\Select::make('type')
                     ->options(\Nurdaulet\FluxItems\Helpers\ItemHelper::getTypes()),
-                Forms\Components\Select::make('city_id')
-                    ->relationship('city', 'name')
-                    ->preload()
-                    ->label(trans('admin.city')),
+//                Forms\Components\Select::make('city_id')
+//                    ->relationship('city', 'name')
+//                    ->preload()
+//                    ->label(trans('admin.city')),
                 Select::make('cities')
-                    ->label(trans('admin.city') . '(new)')
+                    ->label(trans('admin.city'))
                     ->multiple()
                     ->preload()
                     ->relationship('cities', 'name', fn(Builder $query) => $query->active()),

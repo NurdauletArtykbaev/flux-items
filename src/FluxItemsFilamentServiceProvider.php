@@ -9,6 +9,7 @@ use Nurdaulet\FluxItems\Filament\Resources\BannedTopSearchWordResource;
 use Nurdaulet\FluxItems\Filament\Resources\BannerResource;
 use Nurdaulet\FluxItems\Filament\Resources\ComplaintItemResource;
 use Nurdaulet\FluxItems\Filament\Resources\ItemResource;
+use Nurdaulet\FluxItems\Filament\Resources\PromotionGroupResource;
 use Nurdaulet\FluxItems\Filament\Resources\ProtectMethodResource;
 use Nurdaulet\FluxItems\Filament\Resources\ReceiveMethodResource;
 use Nurdaulet\FluxItems\Filament\Resources\ReturnMethodResource;
@@ -24,6 +25,7 @@ class FluxItemsFilamentServiceProvider extends PluginServiceProvider
         ProtectMethodResource::class,
         ReceiveMethodResource::class,
         ReturnMethodResource::class,
+        PromotionGroupResource::class,
     ];
 
     public function configurePackage(Package $package): void

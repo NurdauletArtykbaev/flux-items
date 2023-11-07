@@ -16,14 +16,16 @@ use Filament\Navigation\NavigationGroup;
 use Illuminate\Support\ServiceProvider;
 use Nurdaulet\FluxItems\Models\City;
 use Nurdaulet\FluxItems\Observers\CityObserver;
+use Nurdaulet\FluxItems\Observers\ItemObserver;
 use Nurdaulet\FluxItems\Services\ItemFacadeService;
+use Nurdaulet\FluxItems\Models\Item;
 
 class FluxItemsServiceProvider extends ServiceProvider
 {
 
     public function boot()
     {
-//        City::observe(new CityObserver());
+        Item::observe(new ItemObserver());
 
         if ($this->app->runningInConsole()) {
             $this->publishConfig();
@@ -49,11 +51,6 @@ class FluxItemsServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/../config/flux-items.php' => config_path('flux-items.php'),
         ], 'flux-items-config');
-
-
-//        if (!file_exists(config_path('flux-items.php'))) {
-//            Artisan::call('vendor:publish', ['--tag' => 'flux-items-config']);
-//        }
     }
 
     protected function publishMigrations()
@@ -79,6 +76,8 @@ class FluxItemsServiceProvider extends ServiceProvider
             __DIR__ . '/../database/migrations/check_return_method_item_table.php.stub' => $this->getMigrationFileName('16','check_flux_items_return_method_item_table.php'),
             __DIR__ . '/../database/migrations/check_top_items_table.php.stub' => $this->getMigrationFileName('17','check_flux_items_top_items_table.php'),
             __DIR__ . '/../database/migrations/check_view_history_item_table.php.stub' => $this->getMigrationFileName('18','check_flux_items_view_history_item_table.php'),
+            __DIR__ . '/../database/migrations/check_promotion_groups_table.php.stub' => $this->getMigrationFileName('19','check_flux_items_promotion_groups_table.php'),
+            __DIR__ . '/../database/migrations/check_promotion_group_catalog_table.php.stub' => $this->getMigrationFileName('20','check_flux_items_promotion_group_catalog_table.php'),
         ], 'flux-item-migrations');
     }
 

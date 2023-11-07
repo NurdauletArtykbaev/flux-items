@@ -119,7 +119,7 @@ class ItemService
             }
             $receive_method->pivot = [
                 'item_id' => $item->id,
-                'receive_method_id' => $receive_method->id,
+                'id' => $receive_method->id,
                 'delivery_price' => 0
             ];
             $item->receiveMethods[0] = $receive_method;
@@ -332,10 +332,10 @@ class ItemService
         }
 
         if (isset($data['methods_receiving']) && !empty($data['methods_receiving'])) {
-            $item->receiveMethods()->syncWithPivotValues(array_values(array_map(fn($receivMethods) => $receivMethods['receive_method_id'], $data['methods_receiving'])), ['delivery_price' => 0]);;
+            $item->receiveMethods()->syncWithPivotValues(array_values(array_map(fn($receivMethods) => $receivMethods['id'], $data['methods_receiving'])), ['delivery_price' => 0]);;
         }
         if (isset($data['methods_return']) && !empty($data['methods_return'])) {
-            $item->returnMethods()->sync(array_map(fn($returnMethod) => $returnMethod['return_method_id'], $data['methods_return']));;
+            $item->returnMethods()->sync($data['methods_return']);;
         }
         if (isset($data['address']) && !empty($data['address'])) {
             $item->address_name = $data['address'];

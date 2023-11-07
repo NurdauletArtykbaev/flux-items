@@ -1,0 +1,96 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration {
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        if (Schema::hasTable('promotion_groups')) {
+            $this->checkColumns();
+        } else {
+
+            Schema::create('promotion_groups', function (Blueprint $table) {
+                $table->id();
+                $table->text('name')->nullable();
+                $table->string('slug')->nullable();
+                $table->foreignId('banner_catalog_id')->nullable();
+                $table->text('banner_title')->nullable();
+                $table->boolean('banner_position_left')->default(false);
+                $table->string('banner_bg_color')->nullable();
+                $table->string('banner_image')->nullable();
+                $table->integer('sort')->default(0);
+                $table->boolean('is_active')->default(false);
+                $table->timestamps();
+                $table->softDeletes();
+            });
+        }
+    }
+
+    private function checkColumns()
+    {
+        if (!Schema::hasColumn('promotion_groups', 'name')) {
+            Schema::table('promotion_groups', function (Blueprint $table) {
+                $table->text('name')->nullable();
+            });
+        }
+        if (!Schema::hasColumn('promotion_groups', 'slug')) {
+            Schema::table('promotion_groups', function (Blueprint $table) {
+                $table->string('slug')->nullable();
+            });
+        }
+        if (!Schema::hasColumn('promotion_groups', 'banner_catalog_id')) {
+            Schema::table('promotion_groups', function (Blueprint $table) {
+                $table->foreignId('banner_catalog_id')->nullable();
+            });
+        }
+        if (!Schema::hasColumn('promotion_groups', 'banner_title')) {
+            Schema::table('promotion_groups', function (Blueprint $table) {
+                $table->text('banner_title')->nullable();
+            });
+        }
+        if (!Schema::hasColumn('promotion_groups', 'banner_position_left')) {
+            Schema::table('promotion_groups', function (Blueprint $table) {
+                $table->boolean('banner_position_left')->default(false);
+            });
+        }
+
+        if (!Schema::hasColumn('promotion_groups', 'banner_bg_color')) {
+            Schema::table('promotion_groups', function (Blueprint $table) {
+                $table->string('banner_bg_color')->nullable();
+            });
+        }
+        if (!Schema::hasColumn('promotion_groups', 'banner_image')) {
+            Schema::table('promotion_groups', function (Blueprint $table) {
+                $table->string('banner_image')->nullable();
+            });
+        }
+        if (!Schema::hasColumn('promotion_groups', 'sort')) {
+            Schema::table('promotion_groups', function (Blueprint $table) {
+                $table->integer('sort')->default(0);
+            });
+        }
+        if (!Schema::hasColumn('promotion_groups', 'is_active')) {
+            Schema::table('promotion_groups', function (Blueprint $table) {
+                $table->boolean('is_active')->default(false);
+            });
+        }
+        if (!Schema::hasColumn('promotion_groups', 'deleted_at')) {
+            Schema::table('promotion_groups', function (Blueprint $table) {
+                $table->softDeletes();
+            });
+        }
+
+    }
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('promotion_groups');
+    }
+};

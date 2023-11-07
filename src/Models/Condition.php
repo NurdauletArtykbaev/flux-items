@@ -14,7 +14,7 @@ class Condition extends Model
     public array $translatable = ['name', 'description'];
 
 
-    public function Items()
+    public function items()
     {
         return $this->hasMany(Item::class);
     }
