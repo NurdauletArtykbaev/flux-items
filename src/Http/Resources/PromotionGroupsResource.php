@@ -18,11 +18,12 @@ class PromotionGroupsResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'banner_catalog_id' => $this->banner_catalog_id,
             'banner_catalog' => $this->whenLoaded('catalog', function () {
                 return new CatalogResource($this->catalog);
             }),
             'catalogs' => $this->whenLoaded('catalogs', function () {
-                return  CatalogResource::collection($this->catalogs);
+                return $this->catalogs;
             }),
             'banner_title' => $this->banner_title,
             'banner_position_left' => $this->banner_position_left,

@@ -3,7 +3,6 @@
 namespace Nurdaulet\FluxItems\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Nurdaulet\FluxItems\Http\Resources\Product\TestProductsResource;
 
 class CatalogResource extends JsonResource
 {
@@ -18,9 +17,6 @@ class CatalogResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'items' => $this->whenLoaded('items', function () {
-                return TestProductsResource::collection($this->items);
-            })
         ];
     }
 }

@@ -30,7 +30,7 @@ class TestProductsResource extends JsonResource
             'user_id' => $this->user_id,
             'main_min_price' => $main_min_price,
             'rent_type' => $rentType,
-            'is_favorite' => $this->whenHas('is_favorite', function () {
+            'is_favorite' => $this->when(isset($this->is_favorite), function () {
                 return $this->is_favorite;
             }),
             'images' => ProductImagesResource::collection($this->whenLoaded('images')),

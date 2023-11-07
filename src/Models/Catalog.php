@@ -34,19 +34,13 @@ class Catalog extends Model
 
     public function parent()
     {
-        return $this->belongsTo(self::class, 'parent_id');
-    }
-
-    public function items()
-    {
-        return $this->belongsToMany(Item::class, 'catalog_item', 'catalog_id', 'item_id');
+        return $this->belongsTo(\Nurdaulet\FluxItems\Models\Catalog::class, 'parent_id');
     }
 
     public function childs()
     {
         return $this->hasMany(self::class, 'parent_id');
     }
-
     public function promotionGroup()
     {
         return $this->belongsTo(self::class);
