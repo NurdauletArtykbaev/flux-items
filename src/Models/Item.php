@@ -156,7 +156,7 @@ class Item extends Model
     public function rentTypes()
     {
         return $this->belongsToMany(RentType::class, RentTypeItem::class, 'item_id', 'rent_type_id')
-            ->withPivot('item_id', 'rent_type_id');
+            ->withPivot('item_id', 'rent_type_id', 'price');
     }
 
     public function rentTypePrices()

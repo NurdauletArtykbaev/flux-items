@@ -16,11 +16,13 @@ class TestProductsResource extends JsonResource
      */
     public function toArray($request)
     {
-        if ($this->whenLoaded('images')) {
-            
-        }
+
         $rentType = $this->rentTypes->first();
-        $main_min_price = $rentType?->pivot?->prices?->first()?->price;
+        if (config('flux-items.options.is_rent_daily')) {
+            $main_min_price = $rentType?->pivot?->prices?->first()?->price;
+        } else {
+            $main_min_price = $rentType?->pivot?->price;
+        }
         $rentType = $rentType?->slug;
 
         return [
@@ -30,6 +32,8 @@ class TestProductsResource extends JsonResource
             'is_busy' => $this->is_busy,
             'user_id' => $this->user_id,
             'main_min_price' => $main_min_price,
+//            'rent_type' =>
+            'rent_type' => $rentType,
             'rent_type' => $rentType,
             'is_favorite' => $this->when(isset($this->is_favorite), function () {
                 return $this->is_favorite;

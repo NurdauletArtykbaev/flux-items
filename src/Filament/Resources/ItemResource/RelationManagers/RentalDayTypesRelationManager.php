@@ -23,6 +23,11 @@ class RentalDayTypesRelationManager extends RelationManager
     {
         return $form
             ->schema([
+                Forms\Components\Select::make('rent_type_id')
+                    ->options(config('flux-items.models.rent_type')::get()->pluck('name', 'id')->toArray())
+                    ->label(trans('admin.name')),
+                Forms\Components\TextInput::make('price')
+                    ->label(trans('admin.price')),
             ]);
     }
 

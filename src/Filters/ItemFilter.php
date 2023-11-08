@@ -56,7 +56,7 @@ class ItemFilter extends ModelFilter
         try {
             $result = config('flux-items.models.item') ::search($value)
                 ->with(['clickAnalytics' => true, 'enablePersonalization' => false])
-                ->when(request()->city_id, fn($query) => $query->where('city_id', request()->city_id))
+                ->when(request()->city_id, $this->builder->whereHas('cities', fn($query) => $query->where('cities.id', request()->city_id)))
                 ->take(2000)->raw();
 
             $resultObjectIds = collect($result['hits'])->pluck('objectID')
@@ -191,6 +191,9 @@ class ItemFilter extends ModelFilter
 
     public function exists($value)
     {
+        if ($value == null) {
+            return  $this;
+        }
         if (empty($value)) {
             return  $this->builder->has('images');
         }

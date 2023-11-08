@@ -86,7 +86,7 @@ class RentItemPricesRelationManager extends RelationManager
                                 ->allPrices()
                                 ->where('rent_item_prices.rent_type_id', $data['rent_type_id'])->get()->toArray();
                             $itemService = new  ItemService(new ItemRepository());
-                            $itemService->recalculatePriceAndSave($item->id, $prices, $rentType);
+                            $itemService->recalculateIsDaidyPriceAndSave($item->id, $prices, $rentType);
                         }
                     })
 

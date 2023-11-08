@@ -185,31 +185,6 @@ class ItemService
     }
 
 
-    public function recalculatePriceAndSave($adId, $prices, $rentType)
-    {
-        foreach ($prices as &$price) {
-            unset($price['created_at']);
-            unset($price['updated_at']);
-            unset($price['id']);
-            $price['rent_type_id'] = $rentType->id;
-            $price['price'] = (int)$price['price'];
-            $price['weekend_price'] = $price['weekend_price'] ?? null;
-            $price['from'] = $price['from'] ?? null;
-            $price['to'] = $price['to'] ?? null;
-            $price['item_id'] = $adId;
-        }
-        if (count($prices)) {
-            config('flux-items.models.rent_item_price')::where('item_id', $adId)->where('rent_type_id', $rentType->id)->delete();
-            config('flux-items.models.rent_item_price')::insert($prices);
-            config('flux-items.models.rent_type_item')::updateOrCreate([
-                'rent_type_id' => $rentType->id,
-                'item_id' => $adId
-            ], [
-                'rent_type_id' => $rentType->id,
-                'item_id' => $adId
-            ]);
-        }
-    }
 
     public function getProducts($filters = [])
     {
@@ -225,14 +200,6 @@ class ItemService
         }
         return $this->itemRepository->getNewDataProducts($filters);
     }
-
-//    public function getPaginationProducts($filters = [], $relations = ['images'], $exists = ['images'], $withCount = [])
-//    {
-//        if (!isset($filters['status'])) {
-//            $filters['status'] = 'active';
-//        }
-//        return $this->itemRepository->getPaginationProducts($filters, $relations, $exists, $withCount);
-//    }
 
     public function getPaginationTestProducts($filters = [], $relations = ['images', 'cities','user'], $exists = ['images'], $withCount = [])
     {
@@ -305,16 +272,32 @@ class ItemService
 
         if (isset($data['rent_prices'])) {
             DB::beginTransaction();
+
             config('flux-items.models.rent_type_item')::where('item_id', $item->id)
-                ->whereNotIn('rent_type_id', Arr::pluck($data['rent_prices'], 'rent_type_id'))
+                ->whereNotIn('rent_type_id', Arr::pluck($data['rent_prices'], 'id'))
                 ->delete();
-            $rentTypes = config('flux-items.models.rent_type')::whereIn('id', Arr::pluck($data['rent_prices'], 'rent_type_id'))->get();
+
+            $rentTypes = config('flux-items.models.rent_type')::whereIn('id', Arr::pluck($data['rent_prices'], 'id'))
+                ->get();
+           $isRentDaily = config('flux-items.options.is_rent_daily');
             foreach ($data['rent_prices'] as &$rentPrice) {
-                $rentType = $rentTypes->where('id', $rentPrice['rent_type_id'])?->first();
+                $rentType = $rentTypes->where('id', $rentPrice['id'])?->first();
                 if (empty($rentType?->slug)) {
                     continue;
                 }
-                $this->recalculatePriceAndSave($item->id, $rentPrice['prices'], $rentType);
+                if ($isRentDaily) {
+                    $this->recalculateIsDaidyPriceAndSave($item->id, $rentPrice['prices'], $rentType);
+                } else {
+                    config('flux-items.models.rent_type_item')::updateOrCreate([
+                        'rent_type_id' => $rentType->id,
+                        'item_id' => $item->id
+                    ], [
+                        'rent_type_id' => $rentType->id,
+                        'item_id' => $item->id,
+                        'price' => $rentPrice['price']
+                    ]);
+                }
+
             }
             DB::commit();
         }
@@ -334,9 +317,35 @@ class ItemService
         if (isset($data['protect_methods']) && !empty($data['protect_methods']) && is_array($data['protect_methods'])) {
             $item->protectMethods()->sync($data['protect_methods']);
         }
-
     }
 
+    public function recalculateIsDaidyPriceAndSave($itemId, $prices, $rentType)
+    {
+
+        foreach ($prices as &$price) {
+            unset($price['created_at']);
+            unset($price['updated_at']);
+            unset($price['id']);
+            $price['rent_type_id'] = $rentType->id;
+            $price['price'] = (int)$price['price'];
+            $price['weekend_price'] = $price['weekend_price'] ?? null;
+            $price['from'] = $price['from'] ?? null;
+            $price['to'] = $price['to'] ?? null;
+            $price['item_id'] = $itemId;
+        }
+        if (count($prices)) {
+            config('flux-items.models.rent_item_price')::where('item_id', $itemId)
+                ->where('rent_type_id', $rentType->id)->delete();
+            config('flux-items.models.rent_item_price')::insert($prices);
+            config('flux-items.models.rent_type_item')::updateOrCreate([
+                'rent_type_id' => $rentType->id,
+                'item_id' => $itemId
+            ], [
+                'rent_type_id' => $rentType->id,
+                'item_id' => $itemId
+            ]);
+        }
+    }
     private function prepareCreateProductData($request)
     {
         $data = $request->validated();

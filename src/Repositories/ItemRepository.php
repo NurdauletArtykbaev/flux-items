@@ -31,17 +31,17 @@ class ItemRepository
 
         $query = $this->addToQueryMinMainPriceAndType($query);
 
-        if (isset($filters['n8n'])) {
-            $query = $query->where('items.got_n8n', false)->orderBy('items.id', 'DESC');
-//            $query = $query->where('items.got_n8n', false)->orderBy('items.id');
-            $item = $query->addSelect('items.city_id')->with('city')->first();
-            if ($item) {
-                config('flux-items.models.item')::where('id', $item->id)->update([
-                    'got_n8n' => true
-                ]);
-                return $item;
-            }
-        }
+//        if (isset($filters['n8n'])) {
+//            $query = $query->where('items.got_n8n', false)->orderBy('items.id', 'DESC');
+////            $query = $query->where('items.got_n8n', false)->orderBy('items.id');
+//            $item = $query->addSelect('items.city_id')->with('city')->first();
+//            if ($item) {
+//                config('flux-items.models.item')::where('id', $item->id)->update([
+//                    'got_n8n' => true
+//                ]);
+//                return $item;
+//            }
+//        }
 
         DB::statement('SET session sql_log_bin = 1;');
         return $query->get();
@@ -65,17 +65,17 @@ class ItemRepository
             }]);
 
 
-        if (isset($filters['n8n'])) {
-            $query = $query->where('items.got_n8n', false)->orderBy('items.id', 'DESC');
-//            $query = $query->where('items.got_n8n', false)->orderBy('items.id');
-            $item = $query->addSelect('items.city_id')->with('city')->first();
-            if ($item) {
-                config('flux-items.models.item')::where('id', $item->id)->update([
-                    'got_n8n' => true
-                ]);
-                return $item;
-            }
-        }
+//        if (isset($filters['n8n'])) {
+//            $query = $query->where('items.got_n8n', false)->orderBy('items.id', 'DESC');
+////            $query = $query->where('items.got_n8n', false)->orderBy('items.id');
+//            $item = $query->addSelect('items.city_id')->with('city')->first();
+//            if ($item) {
+//                config('flux-items.models.item')::where('id', $item->id)->update([
+//                    'got_n8n' => true
+//                ]);
+//                return $item;
+//            }
+//        }
 
         DB::statement('SET session sql_log_bin = 1;');
         $products = $query->get();
