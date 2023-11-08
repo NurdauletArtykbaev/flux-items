@@ -241,4 +241,13 @@ class ItemResource extends Resource
             RelationManagers\RentalDayTypesRelationManager::class,
         ];
     }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListItems::route('/'),
+            'create' => Pages\CreateItem::route('/create'),
+            'edit' => Pages\EditItem::route('/{record}/edit'),
+        ];
+    }
 }

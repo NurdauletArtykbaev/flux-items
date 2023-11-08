@@ -2,9 +2,6 @@
 
 namespace Nurdaulet\FluxItems\Filament\Resources\ItemResource\RelationManagers;
 
-use App\Helpers\RentalDayHelper;
-use App\Models\RentalDay;
-use App\Models\User;
 use Filament\Forms;
 use Filament\Resources\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -16,7 +13,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class RentalDayTypesRelationManager extends RelationManager
 {
-    protected static string $relationship = 'rentalDayTypes';
+    protected static string $relationship = 'rentTypes';
     protected static ?string $modelLabel = 'Цены';
     protected static ?string $pluralModelLabel = 'Цены';
 
@@ -26,15 +23,6 @@ class RentalDayTypesRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('rental_day_type')
-                    ->options(RentalDayHelper::getTypeOptions())
-                    ->required()
-                    ->label(trans('admin.rental_day_type')),
-                Forms\Components\TextInput::make('price')
-                    ->required()
-                    ->label(trans('admin.price')),
-                Forms\Components\TextInput::make('weekend_price')
-                    ->label(trans('admin.weekend_price')),
             ]);
     }
 
@@ -42,23 +30,25 @@ class RentalDayTypesRelationManager extends RelationManager
     {
         return $table
             ->columns([
-                Tables\Columns\SelectColumn::make('rental_day_type')
-                    ->disabled()
-                    ->options(RentalDayHelper::getTypeOptions())
-                    ->label(trans('admin.rental_day_type')),
+                Tables\Columns\TextColumn::make('name')
+                    ->label(trans('admin.name')),
                 Tables\Columns\TextColumn::make('price')
-                    ->label(trans('admin.price')),
-                Tables\Columns\TextColumn::make('weekend_price')
-                    ->label(trans('admin.weekend_price')),
+                    ->label(trans('admin.price'))
             ])
             ->filters([
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make()
-                    ->mutateFormDataUsing(function (array $data): array {
-                        return $data;
-                    })
+                Tables\Actions\AttachAction::make()
+                    ->preloadRecordSelect()
+                    ->form(fn(AttachAction $action): array => [
+                        $action->getRecordSelect()
+                            ->preload()
+                            ->label(trans('admin.rent_type')),
+                        Forms\Components\TextInput::make('price')
+                            ->label(trans('admin.price'))
+                            ->required(),
+                    ])
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
