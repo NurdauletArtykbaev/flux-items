@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\ItemResource\RelationManagers;
+namespace Nurdaulet\FluxItems\Filament\Resources\ItemResource\RelationManagers;
 
 use App\Helpers\RentalDayHelper;
 use App\Models\RentalDay;
