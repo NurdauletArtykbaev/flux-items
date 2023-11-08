@@ -23,8 +23,6 @@ class TestProductsResource extends JsonResource
         } else {
             $main_min_price = $rentType?->pivot?->price;
         }
-        $rentType = $rentType?->slug;
-
         return [
             'id' => $this->id,
             'name' => $this->name,
@@ -32,9 +30,10 @@ class TestProductsResource extends JsonResource
             'is_busy' => $this->is_busy,
             'user_id' => $this->user_id,
             'main_min_price' => $main_min_price,
-//            'rent_type' =>
-            'rent_type' => $rentType,
-            'rent_type' => $rentType,
+            'rent_type' => [
+                'name' => $rentType?->name,
+                'slug' => $rentType?->slug
+            ],
             'is_favorite' => $this->when(isset($this->is_favorite), function () {
                 return $this->is_favorite;
             }),
