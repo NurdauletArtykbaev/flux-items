@@ -19,7 +19,7 @@ class CatalogResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'items' => $this->whenLoaded('items', function () {
-                return TestProductsResource::collection($this->items)
+                return TestProductsResource::collection($this->items);
             })
         ];
     }

@@ -78,6 +78,7 @@ class FluxItemsServiceProvider extends ServiceProvider
             __DIR__ . '/../database/migrations/check_view_history_item_table.php.stub' => $this->getMigrationFileName('18','check_flux_items_view_history_item_table.php'),
             __DIR__ . '/../database/migrations/check_promotion_groups_table.php.stub' => $this->getMigrationFileName('19','check_flux_items_promotion_groups_table.php'),
             __DIR__ . '/../database/migrations/check_promotion_group_catalog_table.php.stub' => $this->getMigrationFileName('20','check_flux_items_promotion_group_catalog_table.php'),
+            __DIR__ . '/../database/migrations/check_user_ratings_table.php.stub' => $this->getMigrationFileName('21','check_flux_items_user_ratings_table.php'),
         ], 'flux-item-migrations');
     }
 

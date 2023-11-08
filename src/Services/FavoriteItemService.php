@@ -17,7 +17,7 @@ class FavoriteItemService
 
     public function getFavoriteItems($user)
     {
-        return $this->favoriteItemRepository->getFavoriteProducts($user);
+        return $this->favoriteItemRepository->getFavoriteItems($user);
     }
 
     public function syncFavoriteItem($user, $id)

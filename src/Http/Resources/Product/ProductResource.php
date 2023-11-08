@@ -21,6 +21,12 @@ class ProductResource extends JsonResource
     public function toArray($request)
     {
 
+        $rentTypes = null;
+        if (config('flux-items.options.is_rent_daily')) {
+            $rentTypes = ProductRentTypesIsDailyResource::collection($this->whenLoaded('rentTypes'));
+        } else {
+            $rentTypes = ProductRentTypesResource::collection($this->whenLoaded('rentTypes'));
+        }
         return [
             'id' => $this->id,
             'name' => $this->name,
@@ -39,7 +45,7 @@ class ProductResource extends JsonResource
             'protect_methods' => ProtectMethodsResource::collection($this->whenLoaded('protectMethods')),
             'images' => ProductImagesResource::collection($this->whenLoaded('images')),
             'user' => new ProductUserResource($this->whenLoaded('user')),
-            'rent_types' => ProductRentTypesResource::collection($this->whenLoaded('rentTypes')),
+            'rent_types' => $rentTypes,
             'cities' => CitiesResource::collection($this->whenLoaded('cities')),
             'type_raw' => $this->type ?? ItemHelper::TYPE_RENT,
             'type' => ItemHelper::TYPES[$this->type] ??  ItemHelper::TYPES[ItemHelper::TYPE_RENT],

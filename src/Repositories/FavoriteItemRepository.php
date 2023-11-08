@@ -12,7 +12,7 @@ class FavoriteItemRepository
     {
     }
 
-    public function getFavoriteProducts($user)
+    public function getFavoriteItems($user)
     {
         $user = config('flux-items.models.user')::findOrFail($user->id);
         $favoriteProductIds = $user->favorites()

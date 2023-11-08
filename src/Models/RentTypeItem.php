@@ -14,6 +14,7 @@ class RentTypeItem extends Pivot
     protected $fillable = [
         'rent_type_id',
         'item_id',
+        'price',
     ];
 
     public function prices()

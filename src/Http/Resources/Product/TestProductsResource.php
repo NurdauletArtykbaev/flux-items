@@ -4,6 +4,7 @@ namespace Nurdaulet\FluxItems\Http\Resources\Product;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use Nurdaulet\FluxItems\Helpers\ItemHelper;
+use Nurdaulet\FluxItems\Http\Resources\CitiesResource;
 
 class TestProductsResource extends JsonResource
 {
@@ -36,7 +37,12 @@ class TestProductsResource extends JsonResource
             'images' => ProductImagesResource::collection($this->whenLoaded('images')),
             'user' => new ProductsUserResource($this->whenLoaded('user')),
             'view_history' => new ProductViewHistoryResource($this->whenLoaded('viewHistory')),
+            'city' => $this->whenLoaded('cities', function () {
+                return new CitiesResource($this->cities?->first());
+            }),
             'type_raw' => $this->type ?? ItemHelper::TYPE_RENT,
+
+
             'type' => ItemHelper::TYPES[$this->type] ??  ItemHelper::TYPES[ItemHelper::TYPE_RENT],
         ];
     }

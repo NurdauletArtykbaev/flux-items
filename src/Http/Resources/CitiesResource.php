@@ -17,9 +17,6 @@ class CitiesResource extends JsonResource
         return [
             'id' => (int) $this->id,
             'name' => (string) $this->name,
-            'lat' => (string) $this->lat,
-            'lng' => (string) $this->lng,
-            'is_current' => (bool) $this->id == $request->currentCityId,
         ];
     }
 }

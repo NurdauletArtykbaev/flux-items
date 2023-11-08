@@ -81,7 +81,7 @@ class ItemController
             return config('flux-items.models.rent_type')::all();
         });
         if (!empty($data->toArray())) {
-            $data['url'] = "https://naprocat.kz/product/" . $data->slug;
+            $data['url'] = config('flux-items.options.site_items_base_url') . $data->slug;
             $data['rent_type_name'] = $rentTypes->where('slug', $data->rent_type)->first()?->name ?? $data->rent_type;
         }
 

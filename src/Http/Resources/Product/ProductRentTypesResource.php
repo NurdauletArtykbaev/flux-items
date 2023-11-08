@@ -18,9 +18,7 @@ class ProductRentTypesResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'slug' => $this->slug,
-            'pivot' => [
-                'prices' => ProductRentTypePricesResource::collection($this->pivot->prices)
-            ]
+            'price' => $this?->pivot->price
         ];
     }
 }

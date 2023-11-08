@@ -15,6 +15,7 @@ class PromotionGroupController
     }
     public function show($id, Request $request)
     {
-        return new PromotionGroupsResource(config('flux-items.models.promotion_group')::with(['catalogs.items','catalog'])->active()->findOrFail($id));
-    }
+        return new PromotionGroupsResource(config('flux-items.models.promotion_group')::with(['catalogs.items.rentTypes','catalog'])
+            ->active()->findOrFail($id));}
+
 }

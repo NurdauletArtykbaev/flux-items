@@ -4,7 +4,7 @@ namespace Nurdaulet\FluxItems\Http\Resources\Product;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ProductViewHistoryResource extends JsonResource
+class ProductRentTypesIsDailyResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,9 +15,12 @@ class ProductViewHistoryResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'count' => $this->count,
-            'view_phone_count' => $this->view_phone_count,
-            'favorite_count' => $this->favorite_count,
+            'id' => $this->id,
+            'name' => $this->name,
+            'slug' => $this->slug,
+            'pivot' => [
+                'prices' => ProductRentTypePricesResource::collection($this->pivot->prices)
+            ]
         ];
     }
 }

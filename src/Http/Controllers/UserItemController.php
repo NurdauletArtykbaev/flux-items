@@ -91,9 +91,10 @@ class UserItemController
 
         $activeItemsCount = $this->itemRepository->count(['user_id' => $lordId, 'status' => 'active']);
         $deactiveItemsCount = $this->itemRepository->count(['user_id' => $lordId, 'status' => 'deactive']);
-        $items = $this->itemService->getPaginationTestProducts($filters, null, null, ['orders' => function ($query) {
-            return $query->where('status', 5);
-        }]);
+        $items = $this->itemService->getPaginationTestProducts($filters, null, null, null);
+//        $items = $this->itemService->getPaginationTestProducts($filters, null, null, ['orders' => function ($query) {
+//            return $query->where('status', 5);
+//        }]);
         $items->load('viewHistory');
 
         return TestProductsResource::collection($items)
@@ -119,9 +120,10 @@ class UserItemController
     public function myItem(Request $request, $id)
     {
         $user = $request->user();
-        return new ProductResource($this->itemService->findByUser($id, $user, ['orders' => function ($query) {
-            return $query->where('status', 5);
-        }]));
+        return new ProductResource($this->itemService->findByUser($id, $user, []));
+//        return new ProductResource($this->itemService->findByUser($id, $user, ['orders' => function ($query) {
+//            return $query->where('status', 5);
+//        }]));
     }
 
 

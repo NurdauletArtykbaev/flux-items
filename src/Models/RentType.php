@@ -14,11 +14,11 @@ class RentType extends Model
     protected $guarded = ['id'];
     public array $translatable = ['name'];
 
-    public function products()
+    public function items()
     {
         return $this->belongsToMany(Item::class,RentTypeItem::class,'rent_type_id','id')
 
-            ->withPivot('item_id','rent_type_id')
+            ->withPivot('item_id','rent_type_id', 'price')
             ->using(RentTypeItem::class);
     }
 

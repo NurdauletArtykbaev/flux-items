@@ -21,6 +21,7 @@
         "filament/filament": "^2.16",
         "nurdaulet/flux-base": "*",
         "nurdaulet/flux-catalog": "*",
+        "intervention/image": "^2.7",
         "filament/spatie-laravel-translatable-plugin": "^2.17",
         "algolia/algoliasearch-client-php": "*",
         "awobaz/compoships": "^2.2",

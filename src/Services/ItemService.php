@@ -3,6 +3,7 @@
 namespace Nurdaulet\FluxItems\Services;
 
 use Nurdaulet\FluxCatalog\Http\Resources\CatalogsResource;
+use Nurdaulet\FluxItems\Helpers\ItemHelper;
 use Nurdaulet\FluxItems\Http\Resources\Search\ProductsResource;
 use Nurdaulet\FluxItems\Repositories\ItemRepository;
 use Illuminate\Http\Request;
@@ -55,7 +56,7 @@ class ItemService
             'not_id' => $item->id,
         ];
 
-        if (isset($data['lord_products'])) {
+        if (isset($data['lord_items'])) {
             unset($filters['similar_by_catalog']);
             $filters['user_id'] = $item->user_id;
         }
@@ -65,7 +66,7 @@ class ItemService
 
 
         if ($items->count() < 4) {
-            if (isset($data['lord_products'])) {
+            if (isset($data['lord_items'])) {
                 unset($data['similar_by_catalog']);
             } else {
                 $item->catalogs->load('bloodline');
@@ -78,35 +79,38 @@ class ItemService
         return $items;
     }
 
-    public function paginate($city_id = null, $filters = null, $exists = [], $withCount = []): array
-    {
-        return $this->itemRepository->paginate($city_id, $filters ?? [], $exists, $withCount);
-    }
+//    public function paginate($city_id = null, $filters = null, $exists = [], $withCount = []): array
+//    {
+//        return $this->itemRepository->paginate($city_id, $filters ?? [], $exists, $withCount);
+//    }
 
-    public function skadiIsNotBonus($product)
-    {
-        $product->is_not_bonus = true;
-        if (auth()->guard('sanctum')->check()) {
-            if ($product->user_id == 56 || $product->user_id == 274) {
-                $product->loadExists(['orders as is_not_bonus' => function ($query) {
-                    return $query->where('user_id', auth()->guard('sanctum')->id());
-                }]);
-            }
-        }
-        return $product->is_not_bonus;
-    }
+//    public function skadiIsNotBonus($product)
+//    {
+//        $product->is_not_bonus = true;
+//        if (auth()->guard('sanctum')->check()) {
+//            if ($product->user_id == 56 || $product->user_id == 274) {
+//                $product->loadExists(['orders as is_not_bonus' => function ($query) {
+//                    return $query->where('user_id', auth()->guard('sanctum')->id());
+//                }]);
+//            }
+//        }
+//        return $product->is_not_bonus;
+//    }
 
     public function show($id)
     {
-        $item = $this->itemRepository->find($id, [
+        $relations = [
             'user' => fn($query) => $query->withCount('ratings'),
             'catalogs',
             'images',
-            'rentTypes.pivot.prices',
+            'cities',
             'receiveMethods',
             'returnMethods',
-        ]);
-        $item->is_not_bonus = $this->skadiIsNotBonus($item);
+        ];
+
+        $relations[] = ItemHelper::getPriceRelation();
+        $item = $this->itemRepository->find($id, $relations);
+//        $item->is_not_bonus = $this->skadiIsNotBonus($item);
 
         $item->user->ratings_count = $item->user->ratings_count <= 0 ? $item->user->id + 7 : $item->user->ratings_count;
         $item->user->avg_rating = $item->user->avg_rating <= 0 ? null : $item->user->avg_rating;
@@ -148,17 +152,19 @@ class ItemService
         $filters = [
             'user_id' => $lordId
         ];
-        return $this->itemRepository->find($id, ['user',
-            'catalogs.rentalDayTypes',
+        $relations = ['user',
+            'catalogs',
+//            'catalogs.rentalDayTypes',
             'images',
-            'rentTypes.pivot.prices',
             'receiveMethods',
             'returnMethods',
             'protectMethods',
             'viewHistory',
             'cities'
 //            'intercities'
-        ], $filters, $withCount);
+        ];
+        $relations[] = ItemHelper::getPriceRelation();
+        return $this->itemRepository->find($id, $relations, $filters, $withCount);
     }
 
     public function delete($id, $user )
@@ -205,27 +211,6 @@ class ItemService
         }
     }
 
-    public function getHitProducts($filters = [])
-    {
-        $hitFilers = [
-            'limit' => 8,
-            'in_random' => true,
-            'is_hit' => true,
-        ];
-        $filters = array_merge($filters, $hitFilers);
-        return $this->itemRepository->get($filters ?? []);
-    }
-
-    public function getNewProducts($filters = [])
-    {
-        $hitFilers = [
-            'limit' => 24,
-            'newest' => true,
-        ];
-        $filters = array_merge($filters, $hitFilers);
-        return $this->itemRepository->get($filters ?? []);
-    }
-
     public function getProducts($filters = [])
     {
         if (!isset($filters['status'])) {
@@ -241,18 +226,21 @@ class ItemService
         return $this->itemRepository->getNewDataProducts($filters);
     }
 
-    public function getPaginationProducts($filters = [], $relations = ['images'], $exists = ['images'], $withCount = [])
+//    public function getPaginationProducts($filters = [], $relations = ['images'], $exists = ['images'], $withCount = [])
+//    {
+//        if (!isset($filters['status'])) {
+//            $filters['status'] = 'active';
+//        }
+//        return $this->itemRepository->getPaginationProducts($filters, $relations, $exists, $withCount);
+//    }
+
+    public function getPaginationTestProducts($filters = [], $relations = ['images', 'cities','user'], $exists = ['images'], $withCount = [])
     {
         if (!isset($filters['status'])) {
             $filters['status'] = 'active';
         }
-        return $this->itemRepository->getPaginationProducts($filters, $relations, $exists, $withCount);
-    }
-
-    public function getPaginationTestProducts($filters = [], $relations = ['images', 'rentTypes.pivot.prices', 'user'], $exists = ['images'], $withCount = [])
-    {
-        if (!isset($filters['status'])) {
-            $filters['status'] = 'active';
+        if (isset($relations)) {
+            $relations[] = ItemHelper::getPriceRelation();
         }
         return $this->itemRepository->getPaginationTestProducts($filters, $relations, $exists, $withCount);
     }
@@ -402,7 +390,7 @@ class ItemService
             foreach ($catalogIds as $catalogId) {
                 $catalog = $dbCatalogs->where('id', $catalogId)->first();
                 if ($catalog?->id) {
-                    $categories[] = $catalog;
+                    $catalogs[] = $catalog;
                 }
             }
         }

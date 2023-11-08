@@ -15,7 +15,7 @@ class SimilarProductRequest extends FormRequest
     {
         return [
             'city_id' => 'nullable',
-            'lord_products' => 'nullable'
+            'lord_items' => 'nullable'
         ];
     }
 }

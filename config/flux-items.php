@@ -28,6 +28,8 @@ return [
         'ru', 'en', 'kk'
     ],
     'options' => [
+        'is_rent_daily' => false,
+        'site_items_base_url' => "https://",
         'use_filament_admin_panel' => true,
         'use_list_items_count' => false,
         'cache_expiration' => 269746,

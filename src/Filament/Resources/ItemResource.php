@@ -225,21 +225,20 @@ class ItemResource extends Resource
             ->defaultSort('created_at', 'DESC');
     }
 
+
     public static function getRelations(): array
     {
+        if (config('flux-items.options.is_rent_daily')) {
+            return [
+                RelationManagers\ImagesRelationManager::class,
+                RelationManagers\ReceiveMethodsRelationManager::class,
+                RelationManagers\RentItemPricesRelationManager::class,
+            ];
+        }
         return [
             RelationManagers\ImagesRelationManager::class,
             RelationManagers\ReceiveMethodsRelationManager::class,
-            RelationManagers\RentItemPricesRelationManager::class,
-        ];
-    }
-
-    public static function getPages(): array
-    {
-        return [
-            'index' => Pages\ListItems::route('/'),
-            'create' => Pages\CreateItem::route('/create'),
-            'edit' => Pages\EditItem::route('/{record}/edit'),
+            RelationManagers\RentalDayTypesRelationManager::class,
         ];
     }
 }

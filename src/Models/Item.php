@@ -50,6 +50,7 @@ class Item extends Model
 
     protected $casts = [
         'is_busy' => 'boolean',
+        'is_hit' => 'boolean',
         'is_required_deposit' => 'boolean'
     ];
 
