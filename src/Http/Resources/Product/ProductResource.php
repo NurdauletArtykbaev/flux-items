@@ -48,6 +48,7 @@ class ProductResource extends JsonResource
             'rent_types' => $rentTypes,
             'cities' => CitiesResource::collection($this->whenLoaded('cities')),
             'type_raw' => $this->type ?? ItemHelper::TYPE_RENT,
+            'created_at' => $this?->created_at->format('d M Y'),
             'type' => ItemHelper::TYPES[$this->type] ??  ItemHelper::TYPES[ItemHelper::TYPE_RENT],
         ];
     }
