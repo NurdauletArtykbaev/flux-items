@@ -15,6 +15,8 @@ class RentTypeItem extends Pivot
         'rent_type_id',
         'item_id',
         'price',
+        'old_price',
+
     ];
 
     public function prices()

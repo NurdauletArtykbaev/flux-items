@@ -19,9 +19,11 @@ class TestProductsResource extends JsonResource
 
         $rentType = $this->rentTypes->first();
         if (config('flux-items.options.is_rent_daily')) {
-            $main_min_price = $rentType?->pivot?->prices?->first()?->price;
+            $mainMinPrice = $rentType?->pivot?->prices?->first()?->price;
+            $oldMinPrice = $rentType?->pivot?->prices?->first()?->price;
         } else {
-            $main_min_price = $rentType?->pivot?->price;
+            $mainMinPrice = $rentType?->pivot?->price;
+            $oldMinPrice = $rentType?->pivot?->old_price;
         }
         return [
             'id' => $this->id,
@@ -29,7 +31,8 @@ class TestProductsResource extends JsonResource
             'slug' => $this->slug,
             'is_busy' => $this->is_busy,
             'user_id' => $this->user_id,
-            'main_min_price' => $main_min_price,
+            'main_min_price' => $mainMinPrice,
+            'old_min_price' => $oldMinPrice,
             'rent_type' => [
                 'name' => $rentType?->name,
                 'slug' => $rentType?->slug

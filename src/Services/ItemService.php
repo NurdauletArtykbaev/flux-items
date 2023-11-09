@@ -294,7 +294,8 @@ class ItemService
                     ], [
                         'rent_type_id' => $rentType->id,
                         'item_id' => $item->id,
-                        'price' => $rentPrice['price']
+                        'price' => $rentPrice['price'],
+                        'old_price' => $rentPrice['old_price'] ?? null
                     ]);
                 }
 

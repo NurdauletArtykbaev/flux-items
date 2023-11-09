@@ -26,6 +26,8 @@ class RentalDayTypesRelationManager extends RelationManager
                 Forms\Components\Select::make('rent_type_id')
                     ->options(config('flux-items.models.rent_type')::get()->pluck('name', 'id')->toArray())
                     ->label(trans('admin.name')),
+                Forms\Components\TextInput::make('old_price')
+                    ->label(trans('admin.old_price')),
                 Forms\Components\TextInput::make('price')
                     ->label(trans('admin.price')),
             ]);
@@ -38,7 +40,9 @@ class RentalDayTypesRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('name')
                     ->label(trans('admin.name')),
                 Tables\Columns\TextColumn::make('price')
-                    ->label(trans('admin.price'))
+                    ->label(trans('admin.price')),
+                Tables\Columns\TextColumn::make('old_price')
+                    ->label(trans('admin.old_price'))
             ])
             ->filters([
                 //
@@ -53,6 +57,8 @@ class RentalDayTypesRelationManager extends RelationManager
                         Forms\Components\TextInput::make('price')
                             ->label(trans('admin.price'))
                             ->required(),
+                        Forms\Components\TextInput::make('old_price')
+                            ->label(trans('admin.old_price'))
                     ])
             ])
             ->actions([

@@ -99,10 +99,6 @@ class Item extends Model
         return $this->belongsTo(User::class, 'user_id')->withTrashed();
     }
 
-    public function city()
-    {
-        return $this->belongsTo(City::class, 'city_id');
-    }
 
     public function images()
     {

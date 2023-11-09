@@ -18,11 +18,7 @@ class ReceiveMethodsResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'pivot' => $this->when(isset($this->pivot), function () {
-                return [
-                    "delivery_price" => 0
-                ];
-            }),
+            "delivery_price" => 0
 //            'pivot' => $this->name,
         ];
     }

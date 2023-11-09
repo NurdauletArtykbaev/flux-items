@@ -22,7 +22,6 @@ return new class extends Migration {
 
                 $table->foreignId('condition_id')->nullable()->constrained('conditions')->nullOnDelete();
                 $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
-                $table->foreignId('city_id')->constrained('cities')->cascadeOnDelete();
 
                 $table->foreignId('store_id')->nullable()->constrained('stores')->cascadeOnDelete();
 
@@ -64,11 +63,6 @@ return new class extends Migration {
         if (!Schema::hasColumn('items', 'user_id')) {
             Schema::table('items', function (Blueprint $table) {
                 $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
-            });
-        }
-        if (!Schema::hasColumn('items', 'city_id')) {
-            Schema::table('items', function (Blueprint $table) {
-                $table->foreignId('city_id')->constrained('cities')->cascadeOnDelete();
             });
         }
         if (!Schema::hasColumn('items', 'store_id')) {
