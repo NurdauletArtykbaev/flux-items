@@ -24,10 +24,21 @@ use Nurdaulet\FluxItems\Models\Item;
 class ItemResource extends Resource
 {
     protected static ?string $model = Item::class;
-    protected static ?string $modelLabel = 'объявление';
-    protected static ?string $pluralModelLabel = 'Объявления';
 
-    protected static ?string $navigationIcon = 'heroicon-o-cash';
+    public static function getModelLabel(): string
+    {
+        return trans('admin.items.singular');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return trans('admin.items.plural');
+    }
+
+    public static function getNavigationIcon(): string
+    {
+        return trans('admin.items.icon') ?? 'heroicon-o-cash';
+    }
 
     public static function form(Form $form): Form
     {
@@ -37,7 +48,7 @@ class ItemResource extends Resource
                     ->relationship('condition', 'name')
                     ->translateLabel()
                     ->preload()
-                    ->label(trans('admin.condition')),
+                    ->label(trans('admin.items.condition')),
                 Forms\Components\Select::make('user_id')
                     ->label(trans('admin.user'))
                     ->searchable()
@@ -129,8 +140,8 @@ class ItemResource extends Resource
             ->filters([
                 Filter::make('is_hit')->label(trans('admin.hit'))
                     ->query(fn(Builder $query): Builder => $query->where('is_hit', true)),
-                Filter::make('is_not_prices')->label(trans('admin.is_not_prices'))
-                    ->query(fn(Builder $query): Builder => $query->doesntHave('rentTypes')->orDoesntHave('allPrices')),
+//                Filter::make('is_not_prices')->label(trans('admin.is_not_prices'))
+//                    ->query(fn(Builder $query): Builder => $query->doesntHave('rentTypes')->orDoesntHave('allPrices')),
                 Filter::make('is_not_images')->label(trans('admin.is_not_images'))
                     ->query(fn(Builder $query): Builder => $query->doesntHave('images')),
                 SelectFilter::make('status')

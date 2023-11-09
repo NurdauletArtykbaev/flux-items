@@ -19,7 +19,6 @@ class Item extends Model
 {
     use HasFactory, Reviewable, Searchable, SoftDeletes, HasFilters;
 
-    protected $table = 'items';
     protected $guarded = ['id'];
 
     public function toSearchableArray()
@@ -156,12 +155,7 @@ class Item extends Model
     public function rentTypes()
     {
         return $this->belongsToMany(RentType::class, RentTypeItem::class, 'item_id', 'rent_type_id')
-            ->withPivot('item_id', 'rent_type_id', 'price');
-    }
-
-    public function rentTypePrices()
-    {
-        return $this->belongsToMany(RentType::class, RentTypeItem::class, 'item_id', 'rent_type_id');
+            ->withPivot('item_id', 'rent_type_id', 'price', 'old_price');
     }
 
     public function allPrices()
