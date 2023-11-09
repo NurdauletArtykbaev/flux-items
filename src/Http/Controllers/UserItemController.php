@@ -95,7 +95,7 @@ class UserItemController
 //        $items = $this->itemService->getPaginationTestProducts($filters, null, null, ['orders' => function ($query) {
 //            return $query->where('status', 5);
 //        }]);
-        $items->load('viewHistory');
+        $items->load('viewHistory', 'cities');
 
         return TestProductsResource::collection($items)
             ->additional([
