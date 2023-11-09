@@ -28,10 +28,10 @@ class ItemController
         $filters = $request->input('filters', []);
         $filters['city_id'] = $request->header('city_id');
 
-        $ads = $this->itemService->getPaginationTestProducts($filters);
+        $items = $this->itemService->getPaginated($filters);
         $maxPrice = isset($filters['with_max_price']) ? $this->itemService->getMaxPrice($filters) : 0;
 
-        return TestProductsResource::collection($ads)->additional(['max_price' => $maxPrice]);
+        return TestProductsResource::collection($items)->additional(['max_price' => $maxPrice]);
     }
 
 
@@ -52,7 +52,7 @@ class ItemController
                 'is_hit' => true,
             ];
             $filters = array_merge($filters, $hitFilers);
-            return TestProductsResource::collection($this->itemService->getNewDataProducts($filters));
+            return TestProductsResource::collection($this->itemService->get($filters));
         });
     }
 
@@ -66,25 +66,8 @@ class ItemController
                 'newest' => true,
             ];
             $filters = array_merge($filters, $hitFilers);
-            return TestProductsResource::collection($this->itemService->getNewDataProducts($filters));
+            return TestProductsResource::collection($this->itemService->get($filters));
         });
     }
 
-    public function getNewAdsN8n()
-    {
-        $filters = [
-            'n8n' => true,
-        ];
-        $data = $this->itemService->getProducts($filters);
-
-        $rentTypes = Cache::remember("rent-types-n8n", 269746, function () {
-            return config('flux-items.models.rent_type')::all();
-        });
-        if (!empty($data->toArray())) {
-            $data['url'] = config('flux-items.options.site_items_base_url') . $data->slug;
-            $data['rent_type_name'] = $rentTypes->where('slug', $data->rent_type)->first()?->name ?? $data->rent_type;
-        }
-
-        return response()->json(['data' => $data]);
-    }
 }

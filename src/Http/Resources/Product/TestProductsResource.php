@@ -3,6 +3,7 @@
 namespace Nurdaulet\FluxItems\Http\Resources\Product;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Nurdaulet\FluxItems\Filters\ItemFilter;
 use Nurdaulet\FluxItems\Helpers\ItemHelper;
 use Nurdaulet\FluxItems\Http\Resources\CitiesResource;
 
@@ -17,26 +18,24 @@ class TestProductsResource extends JsonResource
     public function toArray($request)
     {
 
-        $rentType = $this->rentTypes->first();
-        if (config('flux-items.options.is_rent_daily')) {
-            $mainMinPrice = $rentType?->pivot?->prices?->first()?->price;
-            $oldMinPrice = $rentType?->pivot?->prices?->first()?->price;
-        } else {
-            $mainMinPrice = $rentType?->pivot?->price;
-            $oldMinPrice = $rentType?->pivot?->old_price;
-        }
+        $itemType = ($this->type ?? ItemHelper::TYPE_RENT);
+        [$price, $oldPrice] = $this->getPrice($itemType);
+
         return [
             'id' => $this->id,
             'name' => $this->name,
             'slug' => $this->slug,
             'is_busy' => $this->is_busy,
             'user_id' => $this->user_id,
-            'main_min_price' => $mainMinPrice,
-            'old_min_price' => $oldMinPrice,
-            'rent_type' => [
-                'name' => $rentType?->name,
-                'slug' => $rentType?->slug
-            ],
+            'price' => $price,
+            'old_price' => $oldPrice,
+            'rent_type' => $this->when($itemType == ItemHelper::TYPE_RENT, function () {
+                $rentType = $this->rentTypes->first();
+                return [
+                    'name' => $rentType?->name,
+                    'slug' => $rentType?->slug
+                ];
+            }),
             'is_favorite' => $this->when(isset($this->is_favorite), function () {
                 return $this->is_favorite;
             }),
@@ -46,10 +45,27 @@ class TestProductsResource extends JsonResource
             'city' => $this->whenLoaded('cities', function () {
                 return new CitiesResource($this->cities?->first());
             }),
-            'type_raw' => $this->type ?? ItemHelper::TYPE_RENT,
-
-
-            'type' => ItemHelper::TYPES[$this->type] ??  ItemHelper::TYPES[ItemHelper::TYPE_RENT],
+            'type_raw' => $itemType,
+            'type' =>  ItemHelper::TYPES[$itemType],
         ];
     }
+
+    private function getPrice($itemType)
+    {
+        $rentType = $this->rentTypes->first();
+
+        if ($itemType == ItemHelper::TYPE_SELL) {
+            $price = $this->price;
+            $oldPrice = $this->price;
+        }else if (config('flux-items.options.is_rent_daily')) {
+            $price = $rentType?->pivot?->prices?->first()?->price;
+            $oldPrice = $rentType?->pivot?->prices?->first()?->price;
+        } else {
+            $price = $rentType?->pivot?->price;
+            $oldPrice = $rentType?->pivot?->old_price;
+        }
+        return [$price, $oldPrice];
+    }
+
+
 }

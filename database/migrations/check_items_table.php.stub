@@ -19,20 +19,18 @@ return new class extends Migration {
                 $table->id();
                 $table->string('name')->nullable();
                 $table->longText('description')->nullable();
-
                 $table->foreignId('condition_id')->nullable()->constrained('conditions')->nullOnDelete();
                 $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
-
                 $table->foreignId('store_id')->nullable()->constrained('stores')->cascadeOnDelete();
-
                 $table->text('address_name')->nullable();
                 $table->string('lat')->nullable();
                 $table->string('lng')->nullable();
-
                 $table->tinyInteger('status')->default(1);
                 $table->boolean('got_n8n')->default(false);
                 $table->boolean('is_busy')->default(false);
                 $table->string('slug')->nullable();
+                $table->double('price')->default(0);
+                $table->double('old_price')->nullable();
                 $table->boolean('is_required_deposit')->default(0);
                 $table->float('today_delivery_price', 8, 2)->default(0);
                 $table->tinyInteger('is_hit')->default(0);
@@ -106,6 +104,17 @@ return new class extends Migration {
                 $table->string('slug')->nullable();
             });
         }
+        if (!Schema::hasColumn('items', 'price')) {
+            Schema::table('items', function (Blueprint $table) {
+                 $table->double('price')->default(0);
+            });
+        }
+        if (!Schema::hasColumn('items', 'old_price')) {
+            Schema::table('items', function (Blueprint $table) {
+                 $table->double('old_price')->nullable();
+            });
+        }
+
         if (!Schema::hasColumn('items', 'is_required_deposit')) {
             Schema::table('items', function (Blueprint $table) {
                 $table->boolean('is_required_deposit')->default(0);

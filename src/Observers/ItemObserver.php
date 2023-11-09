@@ -62,7 +62,6 @@ class ItemObserver
 //        $ad->images()->delete();
 //        $ad->categories()->sync([]);
 //        $ad->rentTypes()->sync([]);
-//        $ad->allPrices()->delete();
 //        $ad->receiveMethods()->sync([]);
 //        $ad->returnMethods()->sync([]);
 //        $ad->protectMethods()->sync([]);

@@ -2,6 +2,7 @@
 
 namespace Nurdaulet\FluxItems\Filament\Resources;
 
+use Nette\Schema\Schema;
 use Nurdaulet\FluxCatalog\Repositories\CatalogRepository;
 use Nurdaulet\FluxItems\Facades\StringFormatter;
 use Nurdaulet\FluxItems\Filament\Resources\ItemResource\Pages;
@@ -44,11 +45,12 @@ class ItemResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('condition_id')
-                    ->relationship('condition', 'name')
-                    ->translateLabel()
-                    ->preload()
-                    ->label(trans('admin.items.condition')),
+                Forms\Components\TextInput::make('name')
+                    ->maxLength(255)
+                    ->required()
+                    ->label(trans('admin.name')),
+                Forms\Components\Textarea::make('description')
+                    ->label(trans('admin.description')),
                 Forms\Components\Select::make('user_id')
                     ->label(trans('admin.user'))
                     ->searchable()
@@ -62,12 +64,17 @@ class ItemResource extends Resource
                         $user = User::find($value);
                         return $user?->name . ' ' . $user?->surname . ' | ' . $user->phone;
                     }),
+                Forms\Components\Select::make('condition_id')
+                    ->relationship('condition', 'name')
+                    ->translateLabel()
+                    ->preload()
+                    ->label(trans('admin.items.condition')),
                 Forms\Components\Select::make('type')
                     ->options(\Nurdaulet\FluxItems\Helpers\ItemHelper::getTypes()),
-//                Forms\Components\Select::make('city_id')
-//                    ->relationship('city', 'name')
-//                    ->preload()
-//                    ->label(trans('admin.city')),
+                Forms\Components\TextInput::make('price')
+                    ->numeric()->label(trans('admin.items.sell_price')),
+                Forms\Components\TextInput::make('old_price')
+                    ->label(trans('admin.items.sell_old_price')),
                 Select::make('cities')
                     ->label(trans('admin.city'))
                     ->multiple()
@@ -91,12 +98,7 @@ class ItemResource extends Resource
                     ->getOptionLabelFromRecordUsing(fn(Model $record) => $record->name)
                     ->translateLabel()
                     ->label(trans('admin.protect_methods')),
-                Forms\Components\TextInput::make('name')
-                    ->maxLength(255)
-                    ->required()
-                    ->label(trans('admin.name')),
-                Forms\Components\Textarea::make('description')
-                    ->label(trans('admin.description')),
+
                 Forms\Components\Textarea::make('address_name')
                     ->maxLength(65535)
                     ->label(trans('admin.address')),
@@ -106,15 +108,16 @@ class ItemResource extends Resource
                 Forms\Components\TextInput::make('lng')
                     ->maxLength(255)
                     ->label(trans('admin.lng')),
-                Forms\Components\Toggle::make('status')
-                    ->required()
-                    ->label(trans('admin.is_active')),
                 Forms\Components\Toggle::make('is_required_deposit')
                     ->label(trans('admin.is_required_deposit')),
                 Forms\Components\Toggle::make('is_busy')
                     ->label(trans('admin.is_busy')),
                 Forms\Components\Toggle::make('is_hit')
                     ->label(trans('admin.hit')),
+
+                Forms\Components\Toggle::make('status')
+                    ->required()
+                    ->label(trans('admin.is_active')),
             ]);
     }
 
@@ -140,8 +143,6 @@ class ItemResource extends Resource
             ->filters([
                 Filter::make('is_hit')->label(trans('admin.hit'))
                     ->query(fn(Builder $query): Builder => $query->where('is_hit', true)),
-//                Filter::make('is_not_prices')->label(trans('admin.is_not_prices'))
-//                    ->query(fn(Builder $query): Builder => $query->doesntHave('rentTypes')->orDoesntHave('allPrices')),
                 Filter::make('is_not_images')->label(trans('admin.is_not_images'))
                     ->query(fn(Builder $query): Builder => $query->doesntHave('images')),
                 SelectFilter::make('status')

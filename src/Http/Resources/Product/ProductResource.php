@@ -15,18 +15,15 @@ class ProductResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
     public function toArray($request)
     {
+        $itemType = ($this->type ?? ItemHelper::TYPE_RENT);
+        $isItemTypeRent = $itemType == ItemHelper::TYPE_RENT;
 
-        $rentTypes = null;
-        if (config('flux-items.options.is_rent_daily')) {
-            $rentTypes = ProductRentTypesIsDailyResource::collection($this->whenLoaded('rentTypes'));
-        } else {
-            $rentTypes = ProductRentTypesResource::collection($this->whenLoaded('rentTypes'));
-        }
+
         return [
             'id' => $this->id,
             'name' => $this->name,
@@ -45,11 +42,18 @@ class ProductResource extends JsonResource
             'protect_methods' => ProtectMethodsResource::collection($this->whenLoaded('protectMethods')),
             'images' => ProductImagesResource::collection($this->whenLoaded('images')),
             'user' => new ProductUserResource($this->whenLoaded('user')),
-            'rent_types' => $rentTypes,
+            'rent_types' => $this->when($isItemTypeRent, function () {
+                if (config('flux-items.options.is_rent_daily')) {
+                    return ProductRentTypesIsDailyResource::collection($this->whenLoaded('rentTypes'));
+                }
+                return ProductRentTypesResource::collection($this->whenLoaded('rentTypes'));
+            }),
+            'price' => $this->when(!$isItemTypeRent, fn() => $this->price),
+            'old_price' => $this->when(!$isItemTypeRent, fn() => $this->old_price),
             'cities' => CitiesResource::collection($this->whenLoaded('cities')),
-            'type_raw' => $this->type ?? ItemHelper::TYPE_RENT,
-            'created_at' => $this?->created_at->format('d M Y'),
-            'type' => ItemHelper::TYPES[$this->type] ??  ItemHelper::TYPES[ItemHelper::TYPE_RENT],
+            'type_raw' => $itemType,
+            'created_at' => $this?->created_at->format('d.m.Y'),
+            'type' => ItemHelper::TYPES[$itemType],
         ];
     }
 }

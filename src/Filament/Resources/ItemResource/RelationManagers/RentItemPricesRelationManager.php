@@ -18,9 +18,9 @@ use Illuminate\Database\Eloquent\Builder;
 
 class RentItemPricesRelationManager extends RelationManager
 {
-    protected static string $relationship = 'allPrices';
-    protected static ?string $modelLabel = 'Цены (new)';
-    protected static ?string $pluralModelLabel = 'Цены (new)';
+    protected static string $relationship = 'rentDailyAllPrices';
+    protected static ?string $modelLabel = 'Цены';
+    protected static ?string $pluralModelLabel = 'Цены';
 
     protected static ?string $recordTitleAttribute = 'name';
 
@@ -78,12 +78,12 @@ class RentItemPricesRelationManager extends RelationManager
             ->headerActions([
                 Tables\Actions\CreateAction::make()
                     ->after(function (HasRelationshipTable $livewire, array $data) {
-                        if ($livewire->getRelationship()->getParent()->allPrices()
+                        if ($livewire->getRelationship()->getParent()->rentDailyAllPrices()
                                 ->where('rent_item_prices.rent_type_id', $data['rent_type_id'])->count() < 2) {
                             $rentType = RentType::findOrFail($data['rent_type_id']);
                             $item = $livewire->getRelationship()->getParent();
                             $prices = $livewire->getRelationship()->getParent()
-                                ->allPrices()
+                                ->rentDailyAllPrices()
                                 ->where('rent_item_prices.rent_type_id', $data['rent_type_id'])->get()->toArray();
                             $itemService = new  ItemService(new ItemRepository());
                             $itemService->recalculateIsDaidyPriceAndSave($item->id, $prices, $rentType);
@@ -102,7 +102,7 @@ class RentItemPricesRelationManager extends RelationManager
                     }),
                 Tables\Actions\DeleteAction::make()->before(function (DeleteAction $action, RelationManager $livewire) {
 
-                    if (!$livewire->getRelationship()->getParent()->allPrices()
+                    if (!$livewire->getRelationship()->getParent()->rentDailyAllPrices()
                         ->where('rent_item_prices.rent_type_id', $action->getRecord()->rent_type_id)
                         ->where('rent_item_prices.id', '<>', $action->getRecord()->id)
                         ->exists()) {

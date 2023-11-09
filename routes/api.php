@@ -28,7 +28,7 @@ Route::prefix('api')->group(function () {
         Route::get('', [ItemController::class, 'index']);
         Route::get('hits', [ItemController::class, 'hits']);
         Route::get('new', [ItemController::class, 'newItems']);
-        Route::get('new/n8n', [ItemController::class, 'getNewAdsN8n']);
+//        Route::get('new/n8n', [ItemController::class, 'getNewAdsN8n']);
         Route::get('search', [SearchController::class, 'search']);
         Route::get('view-histories', [ItemViewHistoryController::class, 'index'])->middleware('auth:sanctum');
         Route::post('view-histories', [ItemViewHistoryController::class, 'store'])->middleware('auth:sanctum');

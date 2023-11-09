@@ -19,7 +19,7 @@ class ItemViewHistoryController
             ->limit(10)
             ->get()
             ->pluck('item_id')->unique()->toArray();
-        return TestProductsResource::collection($this->itemService->getNewDataProducts(['ids' => $itemIds,'limit' => 8]));
+        return TestProductsResource::collection($this->itemService->get(['ids' => $itemIds,'limit' => 8]));
     }
 
     public function store(SaveItemViewRequest $request)

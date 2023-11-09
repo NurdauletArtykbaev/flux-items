@@ -27,7 +27,7 @@ class UserItemController
         $filters['user_id'] = $userId;
         $filters['newest'] = true;
 
-        $items = $this->itemService->getPaginationTestProducts($filters);
+        $items = $this->itemService->getPaginated($filters);
         return TestProductsResource::collection($items);
     }
 //
@@ -91,8 +91,8 @@ class UserItemController
 
         $activeItemsCount = $this->itemRepository->count(['user_id' => $lordId, 'status' => 'active']);
         $deactiveItemsCount = $this->itemRepository->count(['user_id' => $lordId, 'status' => 'deactive']);
-        $items = $this->itemService->getPaginationTestProducts($filters, null, null, null);
-//        $items = $this->itemService->getPaginationTestProducts($filters, null, null, ['orders' => function ($query) {
+        $items = $this->itemService->getPaginated($filters, null, null, null);
+//        $items = $this->itemService->getPaginated($filters, null, null, ['orders' => function ($query) {
 //            return $query->where('status', 5);
 //        }]);
         $items->load('viewHistory', 'cities');

@@ -154,7 +154,7 @@ class Item extends Model
             ->withPivot('item_id', 'rent_type_id', 'price', 'old_price');
     }
 
-    public function allPrices()
+    public function rentDailyAllPrices()
     {
         return $this->hasMany(RentItemPrice::class, 'item_id', 'id');
     }

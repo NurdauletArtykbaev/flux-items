@@ -22,7 +22,7 @@ class FavoriteItemRepository
         if (!count($favoriteProductIds)) {
             return   collect();
         }
-        return  $this->itemService->getNewDataProducts(['ids' => $favoriteProductIds]);
+        return  $this->itemService->get(['ids' => $favoriteProductIds]);
     }
 
     public function create($user, $id)

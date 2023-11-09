@@ -62,7 +62,7 @@ class ItemService
         }
 
         $filters['city_id'] = $cityId;
-        $items = $this->getNewDataProducts($filters);
+        $items = $this->get($filters);
 
 
         if ($items->count() < 4) {
@@ -74,28 +74,10 @@ class ItemService
                 $filters['similar_by_catalog'] = $catalogIds;
             }
             $filters['city_id'] = $cityId;
-            $items = $this->getNewDataProducts($filters);
+            $items = $this->get($filters);
         }
         return $items;
     }
-
-//    public function paginate($city_id = null, $filters = null, $exists = [], $withCount = []): array
-//    {
-//        return $this->itemRepository->paginate($city_id, $filters ?? [], $exists, $withCount);
-//    }
-
-//    public function skadiIsNotBonus($product)
-//    {
-//        $product->is_not_bonus = true;
-//        if (auth()->guard('sanctum')->check()) {
-//            if ($product->user_id == 56 || $product->user_id == 274) {
-//                $product->loadExists(['orders as is_not_bonus' => function ($query) {
-//                    return $query->where('user_id', auth()->guard('sanctum')->id());
-//                }]);
-//            }
-//        }
-//        return $product->is_not_bonus;
-//    }
 
     public function show($id)
     {
@@ -110,7 +92,6 @@ class ItemService
 
         $relations[] = ItemHelper::getPriceRelation();
         $item = $this->itemRepository->find($id, $relations);
-//        $item->is_not_bonus = $this->skadiIsNotBonus($item);
 
         $item->user->ratings_count = $item->user->ratings_count <= 0 ? $item->user->id + 7 : $item->user->ratings_count;
         $item->user->avg_rating = $item->user->avg_rating <= 0 ? null : $item->user->avg_rating;
@@ -144,9 +125,9 @@ class ItemService
 
     public function findByUser($id, $user, $withCount = [])
     {
-        $lordId =  $user->id;
+        $lordId = $user->id;
         if (config('flux-items.options.use_roles')) {
-            $lordId =  $this->storeEmployeeService->getLordId($user);
+            $lordId = $this->storeEmployeeService->getLordId($user);
         }
 
         $filters = [
@@ -161,47 +142,37 @@ class ItemService
             'protectMethods',
             'viewHistory',
             'cities'
-//            'intercities'
         ];
         $relations[] = ItemHelper::getPriceRelation();
         return $this->itemRepository->find($id, $relations, $filters, $withCount);
     }
 
-    public function delete($id, $user )
+    public function delete($id, $user)
     {
-        $lordId =  $user->id;
+        $lordId = $user->id;
         if (config('flux-items.options.use_roles')) {
-            $lordId =  $this->storeEmployeeService->getLordId($user);
+            $lordId = $this->storeEmployeeService->getLordId($user);
         }
         return $this->itemRepository->delete($id, $lordId);
     }
 
     public function update($id, $filters, $data)
     {
-        $item = $this->itemRepository->find($id,$filters);
+        $item = $this->itemRepository->find($id, $filters);
 
         $item->update($data);
         $this->productRelationshipSave($item, $data);
     }
 
-
-
-    public function getProducts($filters = [])
+    public function get($filters = [])
     {
         if (!isset($filters['status'])) {
             $filters['status'] = 'active';
         }
-        return $this->itemRepository->getProducts($filters);
-    }
-    public function getNewDataProducts($filters = [])
-    {
-        if (!isset($filters['status'])) {
-            $filters['status'] = 'active';
-        }
-        return $this->itemRepository->getNewDataProducts($filters);
+        return $this->itemRepository->get($filters);
     }
 
-    public function getPaginationTestProducts($filters = [], $relations = ['images', 'cities','user'], $exists = ['images'], $withCount = [])
+    public function getPaginated($filters = [], $relations = ['images', 'cities', 'user'], $exists = ['images'], $withCount = [])
     {
         if (!isset($filters['status'])) {
             $filters['status'] = 'active';
@@ -209,12 +180,12 @@ class ItemService
         if (isset($relations)) {
             $relations[] = ItemHelper::getPriceRelation();
         }
-        return $this->itemRepository->getPaginationTestProducts($filters, $relations, $exists, $withCount);
+        return $this->itemRepository->getPaginated($filters, $relations, $exists, $withCount);
     }
 
     public function getMaxPrice($filters = [])
     {
-        return Cache::remember("max-price-new-" . json_encode($filters), 3600, function () use($filters){
+        return Cache::remember("max-price-new-" . json_encode($filters), 3600, function () use ($filters) {
             return $this->itemRepository->getMaxPrice($filters);
         });
     }
@@ -222,7 +193,7 @@ class ItemService
     private function productRelationshipSave($item, $data): void
     {
         $images = config('flux-items.models.image_item')::where('item_id', $item->id)->get();
-        if (isset($data['images']) ) {
+        if (isset($data['images'])) {
             if (!empty($data['images'])) {
                 $deletedImageIds = array_diff($images->pluck('id')->toArray(), $data['images']);
                 if (!empty($deletedImageIds)) {
@@ -279,7 +250,7 @@ class ItemService
 
             $rentTypes = config('flux-items.models.rent_type')::whereIn('id', Arr::pluck($data['rent_prices'], 'id'))
                 ->get();
-           $isRentDaily = config('flux-items.options.is_rent_daily');
+            $isRentDaily = config('flux-items.options.is_rent_daily');
             foreach ($data['rent_prices'] as &$rentPrice) {
                 $rentType = $rentTypes->where('id', $rentPrice['id'])?->first();
                 if (empty($rentType?->slug)) {
@@ -347,13 +318,14 @@ class ItemService
             ]);
         }
     }
+
     private function prepareCreateProductData($request)
     {
         $data = $request->validated();
         $user = $request->user();
-        $lordId =  $user->id;
+        $lordId = $user->id;
         if (config('flux-items.options.use_roles')) {
-            $lordId =  $this->storeEmployeeService->getLordId($user);
+            $lordId = $this->storeEmployeeService->getLordId($user);
         }
         $data['user_id'] = $lordId;
         $data['is_required_deposit'] = !!($request->get('is_required_deposit') == 'true');
