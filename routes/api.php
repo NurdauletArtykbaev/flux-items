@@ -1,5 +1,6 @@
 <?php
 
+use Nurdaulet\FluxItems\Http\Controllers\CartController;
 use Nurdaulet\FluxItems\Http\Controllers\ItemController;
 use Nurdaulet\FluxItems\Http\Controllers\FavoriteController;
 use Nurdaulet\FluxItems\Http\Controllers\UserItemController;
@@ -18,6 +19,8 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('api')->group(function () {
     Route::get('top-searches', [SearchController::class, 'topSearches']);
     Route::apiResource('promotion-groups', PromotionGroupController::class)->only(['index', 'show']);
+
+    Route::get('/cart', [CartController::class, 'index'])->middleware('auth:sanctum');
     Route::group(['prefix' => 'methods'], function () {
         Route::get('protect', ProtectMethodController::class);
         Route::get('receive', ReceiveMethodController::class);
@@ -38,6 +41,8 @@ Route::prefix('api')->group(function () {
         Route::get('{id}', [ItemController::class, 'show']);
         Route::post('{id}/review', [ItemReviewController::class, 'store'])->middleware('auth:sanctum');
         Route::post('{id}/complain', [ComplaintItemController::class, 'store']);
+        Route::post('{id}/cart', [CartController::class, 'addToCart'])->middleware('auth:sanctum');
+        Route::delete('{id}/cart', [CartController::class, 'removeFromCart'])->middleware('auth:sanctum');
     });
 
     Route::group(['prefix' => 'user','middleware' => 'auth:sanctum'], function () {

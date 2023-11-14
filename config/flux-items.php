@@ -23,6 +23,7 @@ return [
         'protect_method' => \Nurdaulet\FluxItems\Models\ProtectMethod::class,
         'rent_type_item' => \Nurdaulet\FluxItems\Models\RentTypeItem::class,
         'rent_item_price' => \Nurdaulet\FluxItems\Models\RentItemPrice::class,
+        'cart' => \Nurdaulet\FluxItems\Models\Cart::class,
     ],
     'languages' => [
         'ru', 'en', 'kk'

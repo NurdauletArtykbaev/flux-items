@@ -29,7 +29,7 @@ return new class extends Migration {
                 $table->boolean('got_n8n')->default(false);
                 $table->boolean('is_busy')->default(false);
                 $table->string('slug')->nullable();
-                $table->double('price')->default(0);
+                $table->double('price')->nullable();
                 $table->double('old_price')->nullable();
                 $table->boolean('is_required_deposit')->default(0);
                 $table->float('today_delivery_price', 8, 2)->default(0);

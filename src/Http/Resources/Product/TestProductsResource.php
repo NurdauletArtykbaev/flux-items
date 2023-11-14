@@ -12,7 +12,7 @@ class TestProductsResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
     public function toArray($request)
@@ -27,8 +27,8 @@ class TestProductsResource extends JsonResource
             'slug' => $this->slug,
             'is_busy' => $this->is_busy,
             'user_id' => $this->user_id,
-            'price' => $price,
-            'old_price' => $oldPrice,
+            'price' => (int)$price,
+            'old_price' => (int)$oldPrice,
             'rent_type' => $this->when($itemType == ItemHelper::TYPE_RENT, function () {
                 $rentType = $this->rentTypes->first();
                 return [
@@ -46,7 +46,7 @@ class TestProductsResource extends JsonResource
                 return new CitiesResource($this->cities?->first());
             }),
             'type_raw' => $itemType,
-            'type' =>  ItemHelper::TYPES[$itemType],
+            'type' => ItemHelper::TYPES[$itemType],
         ];
     }
 
@@ -57,7 +57,7 @@ class TestProductsResource extends JsonResource
         if ($itemType == ItemHelper::TYPE_SELL) {
             $price = $this->price;
             $oldPrice = $this->price;
-        }else if (config('flux-items.options.is_rent_daily')) {
+        } else if (config('flux-items.options.is_rent_daily')) {
             $price = $rentType?->pivot?->prices?->first()?->price;
             $oldPrice = $rentType?->pivot?->prices?->first()?->price;
         } else {

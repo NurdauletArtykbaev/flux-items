@@ -48,8 +48,8 @@ class ProductResource extends JsonResource
                 }
                 return ProductRentTypesResource::collection($this->whenLoaded('rentTypes'));
             }),
-            'price' => $this->when(!$isItemTypeRent, fn() => $this->price),
-            'old_price' => $this->when(!$isItemTypeRent, fn() => $this->old_price),
+            'price' => $this->when(!$isItemTypeRent, fn() => (int) $this->price),
+            'old_price' => $this->when(!$isItemTypeRent, fn() => (int) $this->old_price),
             'cities' => CitiesResource::collection($this->whenLoaded('cities')),
             'type_raw' => $itemType,
             'created_at' => $this?->created_at->format('d.m.Y'),
