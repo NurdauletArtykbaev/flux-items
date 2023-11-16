@@ -13,7 +13,8 @@ class ItemRepository
     {
     }
 
-    public function get($filters = [], $relations = ['images', 'user'], $exists = ['images'])
+    public function get($filters = [], $relations = ['images', 'cities'], $exists = ['images'])
+//    public function get($filters = [], $relations = ['images', 'user'], $exists = ['images'])
     {
         $user = auth()->guard('sanctum')->user();
         $filters['exists'] = $exists;
@@ -38,8 +39,10 @@ class ItemRepository
     }
 
 
-    public function getPaginated($filters = [], $relations = ['images', 'user'],
+    public function getPaginated($filters = [], $relations = ['images', 'cities'],
                                               $exists = ['images'], $withCount = [])
+//    public function getPaginated($filters = [], $relations = ['images', 'user'],
+//                                              $exists = ['images'], $withCount = [])
     {
 
         $query = config('flux-items.models.item')::select('items.id', 'items.name', 'items.slug',
@@ -119,7 +122,6 @@ class ItemRepository
         return config('flux-items.models.item')::query()
             ->applyFilters(new ItemFilter(), $filters)->count();
     }
-
 
     public function delete($id, $userId)
     {

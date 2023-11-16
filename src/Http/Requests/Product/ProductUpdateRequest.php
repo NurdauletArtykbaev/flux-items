@@ -35,6 +35,7 @@ class ProductUpdateRequest extends FormRequest
             'lng' => 'nullable',
             'address' => 'nullable|string',
             'status' => 'nullable|in:0,1',
+            'user_address_id' => 'nullable',
         ];
     }
 }

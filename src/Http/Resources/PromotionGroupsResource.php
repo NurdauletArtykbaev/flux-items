@@ -5,6 +5,7 @@ namespace Nurdaulet\FluxItems\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Nurdaulet\FluxItems\Http\Resources\CatalogResource;
+use Illuminate\Support\Facades\Storage;
 
 class PromotionGroupsResource extends JsonResource
 {
@@ -25,12 +26,13 @@ class PromotionGroupsResource extends JsonResource
             'catalogs' => $this->whenLoaded('catalogs', function () {
                 return CatalogResource::collection($this->catalogs);
             }),
+            'selected_catalog_id' => $this->whenLoaded('catalogs', function () {
+                return $this->catalogs->first()?->id;
+            }),
             'banner_title' => $this->banner_title,
-            'sort' => $this->sort,
-            'banner_position_left' => $this->banner_position_left,
+            'banner_position_left' =>(bool) $this->banner_position_left,
             'banner_bg_color' => $this->banner_bg_color,
-            'banner_image' => $this->banner_image,
-            'reorder' => $this->reorder
+            'banner_image' =>  $this->banner_image ? Storage::disk('s3')->url($this->banner_image) : null,
         ];
     }
 }

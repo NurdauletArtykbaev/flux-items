@@ -15,11 +15,10 @@ return new class extends Migration {
         } else {
             Schema::create('carts', function (Blueprint $table) {
                 $table->id();
-                $table->foreignId('item_id')
-                    ->constrained('items');
-                $table->integer('quantity')->default(1);
                 $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
-                $table->text('fields')->nullable();
+                $table->string('phone')->nullable();
+                $table->string('full_name')->nullable();
+                $table->foreignId('payment_method_id')->nullable()->constrained('payment_methods')->nullOnDelete();
                 $table->timestamps();
                 $table->softDeletes();
             });
@@ -28,25 +27,24 @@ return new class extends Migration {
 
     private function checkColumns()
     {
-        if (!Schema::hasColumn('carts', 'item_id')) {
-            Schema::table('carts', function (Blueprint $table) {
-                $table->foreignId('item_id')->nullable()
-                    ->constrained('items');
-            });
-        }
-        if (!Schema::hasColumn('carts', 'quantity')) {
-            Schema::table('carts', function (Blueprint $table) {
-                $table->integer('quantity')->default(1);
-            });
-        }
         if (!Schema::hasColumn('carts', 'user_id')) {
             Schema::table('carts', function (Blueprint $table) {
                 $table->foreignId('user_id')->nullable()->constrained('users')->cascadeOnDelete();
             });
         }
-        if (!Schema::hasColumn('carts', 'fields')) {
+        if (!Schema::hasColumn('carts', 'phone')) {
             Schema::table('carts', function (Blueprint $table) {
-                $table->text('fields')->nullable();
+                $table->string('phone')->nullable();
+            });
+        }
+        if (!Schema::hasColumn('carts', 'full_name')) {
+            Schema::table('carts', function (Blueprint $table) {
+                $table->string('full_name')->nullable();
+            });
+        }
+        if (!Schema::hasColumn('carts', 'payment_method_id')) {
+            Schema::table('carts', function (Blueprint $table) {
+                $table->foreignId('payment_method_id')->nullable()->constrained('payment_methods')->nullOnDelete();
             });
         }
         if (!Schema::hasColumn('carts', 'deleted_at')) {

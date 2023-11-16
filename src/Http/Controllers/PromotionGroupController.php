@@ -3,8 +3,8 @@
 namespace Nurdaulet\FluxItems\Http\Controllers;
 
 
+use Nurdaulet\FluxItems\Helpers\ItemHelper;
 use Nurdaulet\FluxItems\Http\Resources\PromotionGroupsResource;
-use Nurdaulet\FluxItems\Models\PromotionGroup;
 use Illuminate\Http\Request;
 
 class PromotionGroupController
@@ -13,9 +13,10 @@ class PromotionGroupController
     {
         return PromotionGroupsResource::collection(config('flux-items.models.promotion_group')::active()->get());
     }
+
     public function show($id, Request $request)
     {
-        return new PromotionGroupsResource(config('flux-items.models.promotion_group')::with(['catalogs.items.rentTypes','catalog'])
-            ->active()->findOrFail($id));}
-
+        return new PromotionGroupsResource(config('flux-items.models.promotion_group')::with(["catalogs.items" => fn($query) => $query->with(['images', 'cities', ItemHelper::getPriceRelation()]), 'catalog'])
+            ->active()->findOrFail($id));
+    }
 }

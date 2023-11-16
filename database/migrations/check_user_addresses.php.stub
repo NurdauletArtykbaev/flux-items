@@ -1,0 +1,107 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration {
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        if (Schema::hasTable('user_addresses')) {
+            $this->checkColumns();
+        } else {
+            Schema::create('user_addresses', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+                $table->foreignId('city_id')->nullable()->constrained('cities')->nullOnDelete();
+                $table->string('name')->nullable();
+                $table->text('address')->nullable();
+                $table->string('house')->nullable();
+                $table->string('floor')->nullable();
+                $table->string('apartment')->nullable();
+                $table->string('lat')->nullable();
+                $table->string('lng')->nullable();
+                $table->timestamp('deleted_at')->nullable();
+                $table->boolean('is_main')->default(false);
+                $table->boolean('is_type_store')->default(false);
+                $table->timestamps();
+            });
+        }
+
+    }
+
+
+    private function checkColumns()
+    {
+        if (Schema::hasColumn('user_addresses', 'city_id')) {
+            Schema::table('user_addresses', function (Blueprint $table) {
+                $table->foreignId('city_id')->constrained('cities')->nullOnDelete();
+            });
+        }
+        if (Schema::hasColumn('user_addresses', 'name')) {
+            Schema::table('user_addresses', function (Blueprint $table) {
+                $table->string('name')->nullable();
+            });
+        }
+        if (Schema::hasColumn('user_addresses', 'address')) {
+            Schema::table('user_addresses', function (Blueprint $table) {
+                $table->text('address')->nullable();
+            });
+        }
+        if (Schema::hasColumn('user_addresses', 'house')) {
+            Schema::table('user_addresses', function (Blueprint $table) {
+                $table->string('house')->nullable();
+            });
+        }
+        if (Schema::hasColumn('user_addresses', 'floor')) {
+            Schema::table('user_addresses', function (Blueprint $table) {
+                $table->string('floor')->nullable();
+            });
+        }
+        if (Schema::hasColumn('user_addresses', 'apartment')) {
+            Schema::table('user_addresses', function (Blueprint $table) {
+                $table->string('apartment')->nullable();
+            });
+        }
+        if (Schema::hasColumn('user_addresses', 'lat')) {
+            Schema::table('user_addresses', function (Blueprint $table) {
+                $table->string('lat')->nullable();
+            });
+        }
+        if (Schema::hasColumn('user_addresses', 'lng')) {
+            Schema::table('user_addresses', function (Blueprint $table) {
+                $table->string('lng')->nullable();
+            });
+        }
+        if (Schema::hasColumn('user_addresses', 'deleted_at')) {
+            Schema::table('user_addresses', function (Blueprint $table) {
+                $table->softDeletes();
+            });
+        }
+        if (Schema::hasColumn('user_addresses', 'is_main')) {
+            Schema::table('user_addresses', function (Blueprint $table) {
+                $table->boolean('is_main')->default(false);
+            });
+        }
+        if (Schema::hasColumn('user_addresses', 'is_type_store')) {
+            Schema::table('user_addresses', function (Blueprint $table) {
+                $table->boolean('is_type_store')->default(false);
+            });
+        }
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('user_addresses');
+    }
+};

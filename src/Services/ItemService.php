@@ -172,7 +172,8 @@ class ItemService
         return $this->itemRepository->get($filters);
     }
 
-    public function getPaginated($filters = [], $relations = ['images', 'cities', 'user'], $exists = ['images'], $withCount = [])
+    public function getPaginated($filters = [], $relations = ['images', 'cities'], $exists = ['images'], $withCount = [])
+//    public function getPaginated($filters = [], $relations = ['images', 'cities', 'user'], $exists = ['images'], $withCount = [])
     {
         if (!isset($filters['status'])) {
             $filters['status'] = 'active';

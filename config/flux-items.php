@@ -24,6 +24,8 @@ return [
         'rent_type_item' => \Nurdaulet\FluxItems\Models\RentTypeItem::class,
         'rent_item_price' => \Nurdaulet\FluxItems\Models\RentItemPrice::class,
         'cart' => \Nurdaulet\FluxItems\Models\Cart::class,
+        'cart_item' => \Nurdaulet\FluxItems\Models\CartItem::class,
+        'user_address' => \Nurdaulet\FluxItems\Models\UserAddress::class,
     ],
     'languages' => [
         'ru', 'en', 'kk'

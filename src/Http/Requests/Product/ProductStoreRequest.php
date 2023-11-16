@@ -34,6 +34,7 @@ class ProductStoreRequest extends FormRequest
             'lat' => 'nullable',
             'lng' => 'nullable',
             'address' => 'nullable|string',
+            'user_address_id' => 'nullable',
         ];
     }
 }

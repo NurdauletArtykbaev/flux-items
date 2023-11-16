@@ -13,11 +13,12 @@ use Illuminate\Support\Str;
 use Laravel\Scout\Searchable;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
+use AjCastro\EagerLoadPivotRelations\EagerLoadPivotTrait;
 
 
 class Item extends Model
 {
-    use HasFactory, Reviewable, Searchable, SoftDeletes, HasFilters;
+    use HasFactory, Reviewable, Searchable, SoftDeletes, HasFilters, EagerLoadPivotTrait;
 
     protected $guarded = ['id'];
 
@@ -87,6 +88,11 @@ class Item extends Model
     public function condition()
     {
         return $this->belongsTo(Condition::class, 'condition_id');
+    }
+
+    public function userAddress()
+    {
+        return $this->belongsTo(UserAddress::class, 'user_address_id');
     }
 
     public function favorites()

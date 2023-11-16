@@ -21,6 +21,7 @@ Route::prefix('api')->group(function () {
     Route::apiResource('promotion-groups', PromotionGroupController::class)->only(['index', 'show']);
 
     Route::get('/cart', [CartController::class, 'index'])->middleware('auth:sanctum');
+    Route::post('/cart', [CartController::class, 'update'])->middleware('auth:sanctum');
     Route::group(['prefix' => 'methods'], function () {
         Route::get('protect', ProtectMethodController::class);
         Route::get('receive', ReceiveMethodController::class);
@@ -42,6 +43,7 @@ Route::prefix('api')->group(function () {
         Route::post('{id}/review', [ItemReviewController::class, 'store'])->middleware('auth:sanctum');
         Route::post('{id}/complain', [ComplaintItemController::class, 'store']);
         Route::post('{id}/cart', [CartController::class, 'addToCart'])->middleware('auth:sanctum');
+        Route::put('{id}/cart', [CartController::class, 'updateCartItem'])->middleware('auth:sanctum');
         Route::delete('{id}/cart', [CartController::class, 'removeFromCart'])->middleware('auth:sanctum');
     });
 

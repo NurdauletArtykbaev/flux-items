@@ -10,15 +10,21 @@ class Cart extends Model
 {
     use HasFactory, SoftDeletes;
     protected $fillable = [
-        'item_id',
-        'quantity',
         'user_id',
-        'fields',
+        'phone',
+        'payment_method_id',
+        'full_name',
     ];
 
-    public function item()
+    public function items()
     {
-        return $this->belongsTo(Item::class);
+        return $this->belongsToMany(Item::class,CartItem::class)->using(CartItem::class)->withPivot(['quantity','user_address_id','fields'])
+            ->wherePivotNull('deleted_at');
+    }
+
+    public function paymentMethod()
+    {
+        return $this->belongsTo(PaymentMethod::class);
     }
 
 }

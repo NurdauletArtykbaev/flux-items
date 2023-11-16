@@ -98,7 +98,8 @@ class ItemResource extends Resource
                     ->getOptionLabelFromRecordUsing(fn(Model $record) => $record->name)
                     ->translateLabel()
                     ->label(trans('admin.protect_methods')),
-
+//                Forms\Components\Select::make('user_address_id')
+//                    ->relationship('userAddress', 'address', fn (Builder $query) => $query->where('user_id', $re)),
                 Forms\Components\Textarea::make('address_name')
                     ->maxLength(65535)
                     ->label(trans('admin.address')),
@@ -114,7 +115,6 @@ class ItemResource extends Resource
                     ->label(trans('admin.is_busy')),
                 Forms\Components\Toggle::make('is_hit')
                     ->label(trans('admin.hit')),
-
                 Forms\Components\Toggle::make('status')
                     ->required()
                     ->label(trans('admin.is_active')),

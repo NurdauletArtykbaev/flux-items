@@ -22,6 +22,7 @@ return new class extends Migration {
                 $table->foreignId('condition_id')->nullable()->constrained('conditions')->nullOnDelete();
                 $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
                 $table->foreignId('store_id')->nullable()->constrained('stores')->cascadeOnDelete();
+                $table->foreignId('user_address_id')->nullable()->constrained('user_addresses')->nullOnDelete();
                 $table->text('address_name')->nullable();
                 $table->string('lat')->nullable();
                 $table->string('lng')->nullable();
@@ -71,6 +72,11 @@ return new class extends Migration {
         if (!Schema::hasColumn('items', 'address_name')) {
             Schema::table('items', function (Blueprint $table) {
                 $table->text('address_name')->nullable();
+            });
+        }
+        if (!Schema::hasColumn('items', 'user_address_id')) {
+            Schema::table('items', function (Blueprint $table) {
+                  $table->foreignId('user_address_id')->nullable()->constrained('user_addresses')->nullOnDelete();
             });
         }
         if (!Schema::hasColumn('items', 'lat')) {
