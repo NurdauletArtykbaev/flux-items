@@ -27,12 +27,14 @@ return new class extends Migration {
                 $table->string('lat')->nullable();
                 $table->string('lng')->nullable();
                 $table->tinyInteger('status')->default(1);
+                $table->boolean('is_active')->default(false);
                 $table->boolean('got_n8n')->default(false);
                 $table->boolean('is_busy')->default(false);
                 $table->string('slug')->nullable();
                 $table->double('price')->nullable();
                 $table->double('old_price')->nullable();
                 $table->boolean('is_required_deposit')->default(0);
+                $table->boolean('is_required_confirm')->default(0);
                 $table->float('today_delivery_price', 8, 2)->default(0);
                 $table->tinyInteger('is_hit')->default(0);
                 $table->tinyInteger('type')->default(\Nurdaulet\FluxItems\Helpers\ItemHelper::TYPE_RENT);
@@ -94,6 +96,11 @@ return new class extends Migration {
                 $table->tinyInteger('status')->default(1);
             });
         }
+        if (!Schema::hasColumn('items', 'is_active')) {
+            Schema::table('items', function (Blueprint $table) {
+                $table->boolean('is_active')->default(false);
+            });
+        }
         if (!Schema::hasColumn('items', 'got_n8n')) {
             Schema::table('items', function (Blueprint $table) {
                 $table->boolean('got_n8n')->default(false);
@@ -124,6 +131,12 @@ return new class extends Migration {
         if (!Schema::hasColumn('items', 'is_required_deposit')) {
             Schema::table('items', function (Blueprint $table) {
                 $table->boolean('is_required_deposit')->default(0);
+            });
+        }
+
+        if (!Schema::hasColumn('items', 'is_required_confirm')) {
+            Schema::table('items', function (Blueprint $table) {
+                $table->boolean('is_required_confirm')->default(0);
             });
         }
         if (!Schema::hasColumn('items', 'today_delivery_price')) {

@@ -14,6 +14,9 @@ class CartItemSaveRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'quantity' => 'nullable',
+            'rent_value' => 'nullable',
+            'rent_type_id' => 'nullable',
             'user_address_id' => 'nullable',
             'receive_method_id' => 'nullable',
         ];

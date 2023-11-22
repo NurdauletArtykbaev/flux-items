@@ -1,6 +1,6 @@
 {
     "name": "nurdaulet/flux-items",
-    "description": "Base provider",
+    "description": "Item provider",
     "license": "proprietary",
     "authors": [
         {

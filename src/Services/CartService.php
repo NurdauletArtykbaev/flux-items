@@ -44,16 +44,14 @@ class CartService
         return $cart;
     }
 
-    public function add($user, $itemId, $qty)
+    public function add($user, $itemId, $data)
     {
         $cart = config('flux-items.models.cart')::firstOrCreate(['user_id' => $user->id]);
         config('flux-items.models.cart_item')::updateOrCreate([
             'cart_id' => $cart->id,
             'item_id' => $itemId
         ],
-            [
-                'quantity' => $qty
-            ]
+            $data
         );
     }
 

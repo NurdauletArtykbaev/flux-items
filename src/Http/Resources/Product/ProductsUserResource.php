@@ -23,6 +23,8 @@ class ProductsUserResource extends JsonResource
             'avg_rating' => $this->avg_rating,
             'is_verified' => $this->is_verified,
             'is_identified' => $this->is_identified,
+            'avatar_url' => $this->avatar_url,
+            'avatar_color' => $this->avatar_color,
         ];
     }
 }

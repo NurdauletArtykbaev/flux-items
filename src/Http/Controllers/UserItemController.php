@@ -23,58 +23,22 @@ class UserItemController
     public function index($userId, Request $request)
     {
         $filters = $request->filters ?? [];
-//        $filters['city_id'] = $request->city_id;
         $filters['user_id'] = $userId;
         $filters['newest'] = true;
 
         $items = $this->itemService->getPaginated($filters);
         return TestProductsResource::collection($items);
     }
-//
-//    /**
-//     * @OA\Get(
-//     *    path="/v2/user/{id}/categories",
-//     *    operationId="userCategories",
-//     *    tags={"User"},
-//     *    security={{"sanctum":{}}},
-//     *    summary="Show user categories for clients",
-//     *    description="Show user categories for clients",
-//     *    @OA\Parameter(name="id", in="path", description="Id of ad", required=true,
-//     *         @OA\Schema(type="integer")
-//     *     ),
-//     *    @OA\Response(
-//     *          response=200, description="Success",
-//     *          @OA\JsonContent(
-//     *             @OA\Property(property="status", type="integer", example="200"),
-//     *             @OA\Property(property="data",type="object")
-//     *          )
-//     *       )
-//     *  )
-//     */
-//    public function categories($userId, Request $request)
-//    {
-//        $cityId = $request->city_id;
-//        $lang = app()->getLocale();
-//
-//        $categories = Cache::remember("categories-by-user-$userId-$lang", 3600, function () use ($userId, $cityId) {
-//            return $this->categoryService->getByUser($userId, $cityId);
-//        });
-//
-//        return CategoryResource::collection($categories);
-//    }
-
 
     public function update(ProductUpdateRequest $request, $id)
     {
         $user = $request->user();
-//        if ()
         $lordId = $user->id;
         if (config('flux-items.use_roles')) {
 
 //            $lordId = $this->storeEmployeeService->getLordId($user);
         }
-
-        return $this->itemService->update($id, ['user_id' => $lordId], $request->validated());
+        $this->itemService->update($id, ['user_id' => $lordId], $request->validated());
     }
 
     public function myItems(Request $request)

@@ -39,8 +39,7 @@ class CartController
     public function addToCart($id, AddToCartRequest $request): \Illuminate\Http\Response
     {
         $user = $request->user();
-        $qty = $request->quantity ?? 1;
-        $this->cartService->add($user, $id, $qty);
+        $this->cartService->add($user, $id, $request->validated());
         return response()->noContent();
     }
 

@@ -45,7 +45,7 @@ class ItemFilter extends ModelFilter
         if ($value == 'all') {
             return $this;
         }
-        return $this->builder->where('items.status', $value == 'active' ? 1 : 0);
+        return $this->builder->where('items.is_active', $value == 'active' ? 1 : 0);
     }
 
     public function q($value)

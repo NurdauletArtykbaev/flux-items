@@ -17,7 +17,8 @@ class CartItem extends Pivot
         'user_address_id',
         'receive_method_id',
         'fields',
-        'fields',
+        'rent_value',
+        'rent_type_id',
     ];
     public function receiveMethod()
     {

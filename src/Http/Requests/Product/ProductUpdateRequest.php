@@ -20,10 +20,11 @@ class ProductUpdateRequest extends FormRequest
             'condition_id' => 'nullable|int',
             'city_ids' => 'nullable|array',
             'is_required_deposit' => 'nullable',
+            'is_required_confirm' => 'nullable',
             'today_delivery_price' => 'nullable',
             'images' => 'nullable|array',
             'temp_images' => 'nullable|array',
-            'categories' => 'nullable|array',
+            'catalogs' => 'nullable|array',
             'rent_prices' => 'nullable|array',
             'rent_prices*.id' => 'required',
             'rent_prices*.price' => 'required',
@@ -34,7 +35,7 @@ class ProductUpdateRequest extends FormRequest
             'lat' => 'nullable',
             'lng' => 'nullable',
             'address' => 'nullable|string',
-            'status' => 'nullable|in:0,1',
+            'is_active' => 'nullable|in:0,1',
             'user_address_id' => 'nullable',
         ];
     }

@@ -21,9 +21,11 @@ class ItemRepository
         $relations[] = ItemHelper::getPriceRelation();
 
         DB::statement('SET session sql_log_bin = 0;');
-        $query = config('flux-items.models.item')::whereHas('rentTypes')
-            ->select('items.id', 'items.name', 'items.slug',
-                'items.is_hit', 'items.is_busy', 'items.user_id',
+        $query = config('flux-items.models.item')::
+//        whereHas('rentTypes')
+//            ->
+            select('items.id', 'items.name', 'items.slug',
+                'items.is_hit','items.is_required_confirm', 'items.is_busy', 'items.user_id',
                 'items.type', 'items.price', 'items.old_price',
             );
 
@@ -41,12 +43,10 @@ class ItemRepository
 
     public function getPaginated($filters = [], $relations = ['images', 'cities'],
                                               $exists = ['images'], $withCount = [])
-//    public function getPaginated($filters = [], $relations = ['images', 'user'],
-//                                              $exists = ['images'], $withCount = [])
     {
 
         $query = config('flux-items.models.item')::select('items.id', 'items.name', 'items.slug',
-            'items.is_hit', 'items.is_busy', 'items.user_id',
+            'items.is_hit', 'items.is_busy', 'items.is_required_confirm', 'items.user_id',
             'items.type', 'items.price', 'items.old_price',
         );
 
@@ -65,7 +65,6 @@ class ItemRepository
             ->withExists(['favorites as is_favorite' => function ($query) use ($user) {
                 return $query->where('user_id', $user?->id);
             }]);
-
 
         DB::statement('SET session sql_log_bin = 0;');
 

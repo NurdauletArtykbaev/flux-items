@@ -3,7 +3,6 @@
 namespace Nurdaulet\FluxItems\Http\Resources\Product;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Nurdaulet\FluxItems\Filters\ItemFilter;
 use Nurdaulet\FluxItems\Helpers\ItemHelper;
 use Nurdaulet\FluxItems\Http\Resources\CitiesResource;
 
@@ -26,6 +25,7 @@ class TestProductsResource extends JsonResource
             'name' => $this->name,
             'slug' => $this->slug,
             'is_busy' => $this->is_busy,
+            'is_required_confirm' => $this->is_required_confirm,
             'user_id' => $this->user_id,
             'price' => (int)$price,
             'old_price' => (int)$oldPrice,
@@ -56,7 +56,7 @@ class TestProductsResource extends JsonResource
 
         if ($itemType == ItemHelper::TYPE_SELL) {
             $price = $this->price;
-            $oldPrice = $this->price;
+            $oldPrice = $this->old_price;
         } else if (config('flux-items.options.is_rent_daily')) {
             $price = $rentType?->pivot?->prices?->first()?->price;
             $oldPrice = $rentType?->pivot?->prices?->first()?->price;

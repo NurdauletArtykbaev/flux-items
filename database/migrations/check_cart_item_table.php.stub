@@ -21,6 +21,8 @@ return new class extends Migration
                 $table->integer('quantity')->default(1);
                 $table->foreignId('user_address_id')->nullable()->constrained('user_addresses')->nullOnDelete();
                 $table->foreignId('receive_method_id')->nullable()->constrained('receive_methods')->nullOnDelete();
+                $table->string('rent_value')->nullable();
+                $table->foreignId('rent_type_id')->nullable()->constrained('rent_types');
                 $table->text('fields')->nullable();
                 $table->timestamps();
                 $table->softDeletes();
@@ -58,6 +60,16 @@ return new class extends Migration
         if (!Schema::hasColumn('cart_item', 'fields')) {
             Schema::table('cart_item', function (Blueprint $table) {
                 $table->text('fields')->nullable();
+            });
+        }
+        if (!Schema::hasColumn('cart_item', 'rent_value')) {
+            Schema::table('cart_item', function (Blueprint $table) {
+               $table->string('rent_value')->nullable();
+            });
+        }
+        if (!Schema::hasColumn('cart_item', 'rent_type_id')) {
+            Schema::table('cart_item', function (Blueprint $table) {
+               $table->foreignId('rent_type_id')->nullable()->constrained('rent_types');
             });
         }
         if (!Schema::hasColumn('cart_item', 'deleted_at')) {

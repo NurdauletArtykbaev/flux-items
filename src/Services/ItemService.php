@@ -62,7 +62,7 @@ class ItemService
         }
 
         $filters['city_id'] = $cityId;
-        $items = $this->get($filters);
+        $items = $this->getPaginated($filters);
 
 
         if ($items->count() < 4) {
@@ -74,7 +74,7 @@ class ItemService
                 $filters['similar_by_catalog'] = $catalogIds;
             }
             $filters['city_id'] = $cityId;
-            $items = $this->get($filters);
+            $items = $this->getPaginated($filters);
         }
         return $items;
     }
@@ -82,16 +82,17 @@ class ItemService
     public function show($id)
     {
         $relations = [
-            'user' => fn($query) => $query->withCount('ratings'),
+            'user' => fn($query) => $query->withCount('reviews'),
             'catalogs',
             'images',
+            'condition',
             'cities',
             'receiveMethods',
             'returnMethods',
         ];
 
         $relations[] = ItemHelper::getPriceRelation();
-        $item = $this->itemRepository->find($id, $relations);
+        $item = $this->itemRepository->find($id, $relations, [] , ['reviews']);
 
         $item->user->ratings_count = $item->user->ratings_count <= 0 ? $item->user->id + 7 : $item->user->ratings_count;
         $item->user->avg_rating = $item->user->avg_rating <= 0 ? null : $item->user->avg_rating;
@@ -139,6 +140,7 @@ class ItemService
             'images',
             'receiveMethods',
             'returnMethods',
+            'condition',
             'protectMethods',
             'viewHistory',
             'cities'
@@ -173,7 +175,6 @@ class ItemService
     }
 
     public function getPaginated($filters = [], $relations = ['images', 'cities'], $exists = ['images'], $withCount = [])
-//    public function getPaginated($filters = [], $relations = ['images', 'cities', 'user'], $exists = ['images'], $withCount = [])
     {
         if (!isset($filters['status'])) {
             $filters['status'] = 'active';

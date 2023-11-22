@@ -40,7 +40,8 @@ Route::prefix('api')->group(function () {
         Route::post('favorite', [FavoriteController::class, 'syncFavorites'])->middleware('auth:sanctum');
         Route::get('{id}/similar', [ItemController::class, 'similarItems']);
         Route::get('{id}', [ItemController::class, 'show']);
-        Route::post('{id}/review', [ItemReviewController::class, 'store'])->middleware('auth:sanctum');
+        Route::get('{id}/reviews', [ItemReviewController::class, 'index'])->middleware('auth:sanctum');
+        Route::post('{id}/reviews', [ItemReviewController::class, 'store'])->middleware('auth:sanctum');
         Route::post('{id}/complain', [ComplaintItemController::class, 'store']);
         Route::post('{id}/cart', [CartController::class, 'addToCart'])->middleware('auth:sanctum');
         Route::put('{id}/cart', [CartController::class, 'updateCartItem'])->middleware('auth:sanctum');

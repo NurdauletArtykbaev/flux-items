@@ -51,6 +51,8 @@ class Item extends Model
     protected $casts = [
         'is_busy' => 'boolean',
         'is_hit' => 'boolean',
+        'is_active' => 'boolean',
+        'is_required_confirm' => 'boolean',
         'is_required_deposit' => 'boolean'
     ];
 
@@ -169,12 +171,12 @@ class Item extends Model
 
     public function scopeActive($query)
     {
-        return $query->where('status', 1);
+        return $query->where('is_active', 1);
     }
 
     public function scopeIsNotActive($query)
     {
-        return $query->where('status', 0);
+        return $query->where('is_active', 0);
     }
 
     public function scopeHit($query)
