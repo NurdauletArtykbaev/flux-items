@@ -10,7 +10,7 @@ class FavoriteItemService
 
     public function __construct(
         private FavoriteItemRepository $favoriteItemRepository,
-        private ItemRepository      $itemRepository,
+        private ItemRepository         $itemRepository,
     )
     {
     }
@@ -18,6 +18,17 @@ class FavoriteItemService
     public function getFavoriteItems($user)
     {
         return $this->favoriteItemRepository->getFavoriteItems($user);
+    }
+
+    public function syncFavoriteItems($user, $ids = [])
+    {
+        foreach ($ids as $id) {
+            $this->syncFavoriteItem($user, $id);
+        }
+
+        config('flux-items.models.favorite_item')::whereNotIn('item_id', $ids)
+            ->where('user_id', $user->id)
+            ->delete();
     }
 
     public function syncFavoriteItem($user, $id)
@@ -31,10 +42,6 @@ class FavoriteItemService
         }
 
         $item->viewHistory()->where('favorite_count', '>', 0)->decrement('favorite_count');
-
-        config('flux-items.models.favorite_item')::where('item_id', $id)
-            ->where('user_id', $user->id)
-            ->delete();
         return true;
     }
 

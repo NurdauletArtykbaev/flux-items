@@ -128,7 +128,7 @@ class ItemFilter extends ModelFilter
 
         if (is_array($value)) {
             return $this->builder->whereIn('items.id', $value)
-                ->orderByRaw(\DB::raw("FIELD(items.id, " . implode(',', $value) . " )"));
+                ->orderBy(\DB::raw("FIELD(items.id, " . implode(',', $value) . " )"));
         }
         return $this->builder->where('items.id', $value);
     }

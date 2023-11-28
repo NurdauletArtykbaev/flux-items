@@ -7,7 +7,7 @@ use Nurdaulet\FluxItems\Http\Resources\Product\TestProductsResource;
 use Nurdaulet\FluxItems\Services\FavoriteItemService;
 use Illuminate\Http\Request;
 
-class FavoriteController 
+class FavoriteController
 {
     public function __construct(private FavoriteItemService $userFavoriteService)
     {
@@ -17,9 +17,9 @@ class FavoriteController
     {
         $user = $request->user();
 
-        foreach ($request->input('ids') as $id) {
-            $this->userFavoriteService->syncFavoriteItem($user, $id);
-        }
+//        foreach ($request->input('ids') as $id) {
+        $this->userFavoriteService->syncFavoriteItems($user, $request->input('ids',[]));
+//        }
 
         return response()->noContent();
     }
