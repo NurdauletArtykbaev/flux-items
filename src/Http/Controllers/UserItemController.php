@@ -39,6 +39,7 @@ class UserItemController
 //            $lordId = $this->storeEmployeeService->getLordId($user);
         }
         $this->itemService->update($id, ['user_id' => $lordId], $request->validated());
+        return response()->noContent();
     }
 
     public function myItems(Request $request)
@@ -51,11 +52,11 @@ class UserItemController
             'user_id' => $lordId,
             'exists' => []
         ];
-        $filters['status'] = $request->status ?? 'all';
+        $filters['status'] = $request->input('filters')['status'] ?? 'all';
 
         $activeItemsCount = $this->itemRepository->count(['user_id' => $lordId, 'status' => 'active']);
         $deactiveItemsCount = $this->itemRepository->count(['user_id' => $lordId, 'status' => 'deactive']);
-        $items = $this->itemService->getPaginated($filters, null, null, null);
+        $items = $this->itemService->getPaginated($filters, ['images', 'cities', 'rentTypes'], null, null);
 //        $items = $this->itemService->getPaginated($filters, null, null, ['orders' => function ($query) {
 //            return $query->where('status', 5);
 //        }]);
