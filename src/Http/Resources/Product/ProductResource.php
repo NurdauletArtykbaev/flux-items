@@ -31,14 +31,21 @@ class ProductResource extends JsonResource
             'lat' => $this->lat,
             'lng' => $this->lng,
             'is_hit' => $this->is_hit,
+            'avg_rating' => (string) $this->avg_rating <= 0 ? "0" : $this->avg_rating,
             'is_favorite' => $this->is_favorite,
             'is_required_confirm' => $this->is_required_confirm,
-            'is_busy' => $this->is_busy,
+//            'is_busy' => $this->is_busy,
             'description' => $this->description,
             'orders_count' => $this->whenCounted('orders'),
             'reviews_count' => $this->reviews_count,
             'catalogs' => CatalogsResource::collection($this->whenLoaded('catalogs')),
-            'view_history' => new ProductViewHistoryResource($this->whenLoaded('viewHistory')),
+            'view_history' => $this->whenLoaded('viewHistory', function () {
+                return $this->viewHistory ? new ProductViewHistoryResource($this->viewHistory) : [
+                    'count' => 0,
+                    'view_phone_count' => 0,
+                    'favorite_count' => 0,
+                ];
+            }),
             'return_methods' => ReturnMethodsResource::collection($this->whenLoaded('returnMethods')),
             'receive_methods' => ReceiveMethodsResource::collection($this->whenLoaded('receiveMethods')),
             'protect_methods' => ProtectMethodsResource::collection($this->whenLoaded('protectMethods')),

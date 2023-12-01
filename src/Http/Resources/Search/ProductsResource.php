@@ -21,7 +21,7 @@ class ProductsResource extends JsonResource
             'name' => $this->name,
             'slug' => $this->slug,
             'is_hit' => $this->is_hit,
-            'is_busy' => $this->is_busy,
+//            'is_busy' => $this->is_busy,
             'user_id' => $this->user_id,
             'catalog' => $this->whenLoaded('catalogs', function () {
                 return new CatalogsResource($this->catalogs->first());

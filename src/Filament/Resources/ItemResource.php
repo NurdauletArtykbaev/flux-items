@@ -111,8 +111,8 @@ class ItemResource extends Resource
                     ->label(trans('admin.lng')),
                 Forms\Components\Toggle::make('is_required_deposit')
                     ->label(trans('admin.is_required_deposit')),
-                Forms\Components\Toggle::make('is_busy')
-                    ->label(trans('admin.is_busy')),
+//                Forms\Components\Toggle::make('is_busy')
+//                    ->label(trans('admin.is_busy')),
                 Forms\Components\Toggle::make('is_hit')
                     ->label(trans('admin.hit')),
                 Forms\Components\Toggle::make('is_active')

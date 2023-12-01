@@ -24,7 +24,7 @@ class TestProductsResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'slug' => $this->slug,
-            'is_busy' => $this->is_busy,
+//            'is_busy' => $this->is_busy,
             'is_required_confirm' => $this->is_required_confirm,
             'user_id' => $this->user_id,
             'price' => (int)$price,
@@ -47,8 +47,16 @@ class TestProductsResource extends JsonResource
             }),
             'is_active' => $this->is_active,
             'images' => ProductImagesResource::collection($this->whenLoaded('images')),
+
             'user' => new ProductsUserResource($this->whenLoaded('user')),
-            'view_history' => new ProductViewHistoryResource($this->whenLoaded('viewHistory')),
+            'view_history' => $this->whenLoaded('viewHistory', function () {
+                return $this->viewHistory ? new ProductViewHistoryResource($this->viewHistory) : [
+                    'count' => 0,
+                    'view_phone_count' => 0,
+                    'favorite_count' => 0,
+                ];
+            }),
+//            'view_history' => new ProductViewHistoryResource($this->whenLoaded('viewHistory')),
             'city' => $this->whenLoaded('cities', function () {
                 return new CitiesResource($this->cities?->first());
             }),
