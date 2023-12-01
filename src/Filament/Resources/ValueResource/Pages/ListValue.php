@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Filament\Resources\ValueResource\Pages;
+namespace Nurdaulet\FluxItems\Filament\Resources\ValueResource\Pages;
 
-use App\Filament\Resources\ValueResource;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\ListRecords;
+use Nurdaulet\FluxItems\Filament\Resources\ValueResource;
 
 class ListValue extends ListRecords
 {

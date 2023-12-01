@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Filament\Resources\ValueResource\Pages;
-
-use App\Filament\Resources\ValueResource;
+namespace Nurdaulet\FluxItems\Filament\Resources\ValueResource\Pages;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\CreateRecord;
+use Nurdaulet\FluxItems\Filament\Resources\ValueResource;
 
 class CreateValue extends CreateRecord
 {
