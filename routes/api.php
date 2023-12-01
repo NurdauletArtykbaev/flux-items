@@ -53,7 +53,7 @@ Route::prefix('api')->group(function () {
         Route::get('my-items/{id}', [UserItemController::class, 'myItem']);
         Route::delete('my-items/{id}', [UserItemController::class, 'destroy']);
         Route::post('my-items', [UserItemController::class, 'store']);
-        Route::post('my-items/{id}/status', [UserItemController::class, 'updateAdStatus']);
+//        Route::post('my-items/{id}/status', [UserItemController::class, 'updateAdStatus']);
         Route::post('my-items/{id}', [UserItemController::class, 'update']);
     });
 

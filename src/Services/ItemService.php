@@ -141,6 +141,7 @@ class ItemService
 //            'catalogs.rentalDayTypes',
             'images',
             'receiveMethods',
+            'properties',
             'returnMethods',
             'condition',
             'protectMethods',
@@ -162,7 +163,7 @@ class ItemService
 
     public function update($id, $filters, $data)
     {
-        $item = $this->itemRepository->find($id, $filters);
+        $item = $this->itemRepository->find($id, [],$filters);
 
         $item->update($data);
         $this->productRelationshipSave($item, $data);
@@ -292,6 +293,17 @@ class ItemService
         }
         if (isset($data['protect_methods']) && !empty($data['protect_methods']) && is_array($data['protect_methods'])) {
             $item->protectMethods()->sync($data['protect_methods']);
+        }
+        if (isset($data['properties'])) {
+            foreach ($data['properties'] as $property) {
+                $propertyIds = [
+                    $property['id'] => [
+                        'value_id' => $property?->value_id,
+                        'custom_value' => $property?->custom_value
+                    ]
+                ];
+                $item->properties()->sync($propertyIds);
+            }
         }
     }
 

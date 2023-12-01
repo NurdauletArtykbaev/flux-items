@@ -46,6 +46,9 @@ class ProductResource extends JsonResource
                     'favorite_count' => 0,
                 ];
             }),
+            'properties' => $this->whenLoaded('properties', function () {
+                return $this->properties;
+            }),
             'return_methods' => ReturnMethodsResource::collection($this->whenLoaded('returnMethods')),
             'receive_methods' => ReceiveMethodsResource::collection($this->whenLoaded('receiveMethods')),
             'protect_methods' => ProtectMethodsResource::collection($this->whenLoaded('protectMethods')),

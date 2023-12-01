@@ -26,6 +26,6 @@ class Property extends Model
     }
     public function items()
     {
-        return $this->belongsToMany(Item::class, 'item_characteristics','property_id','item_id')->withPivot('value_id','custom_value');
+        return $this->belongsToMany(Item::class, 'item_property','property_id','item_id')->withPivot('value_id','custom_value');
     }
 }
