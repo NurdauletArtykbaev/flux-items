@@ -10,9 +10,11 @@ use Nurdaulet\FluxItems\Filament\Resources\BannerResource;
 use Nurdaulet\FluxItems\Filament\Resources\ComplaintItemResource;
 use Nurdaulet\FluxItems\Filament\Resources\ItemResource;
 use Nurdaulet\FluxItems\Filament\Resources\PromotionGroupResource;
+use Nurdaulet\FluxItems\Filament\Resources\PropertyResource;
 use Nurdaulet\FluxItems\Filament\Resources\ProtectMethodResource;
 use Nurdaulet\FluxItems\Filament\Resources\ReceiveMethodResource;
 use Nurdaulet\FluxItems\Filament\Resources\ReturnMethodResource;
+use Nurdaulet\FluxItems\Filament\Resources\ValueResource;
 use Spatie\LaravelPackageTools\Package;
 
 class FluxItemsFilamentServiceProvider extends PluginServiceProvider
@@ -26,7 +28,8 @@ class FluxItemsFilamentServiceProvider extends PluginServiceProvider
         ReceiveMethodResource::class,
         ReturnMethodResource::class,
         PromotionGroupResource::class,
-        PropertyR::class,
+        PropertyResource::class,
+        ValueResource::class,
     ];
 
 
