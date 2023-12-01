@@ -2,7 +2,7 @@
 
 namespace Nurdaulet\FluxItems\Filament\Resources;
 
-use Nurdaulet\FluxItems\Filament\Resources\Pages;
+use Nurdaulet\FluxItems\Filament\Resources\ValueResource\Pages;
 use Filament\Forms;
 use Filament\Resources\Concerns\Translatable;
 use Filament\Resources\Form;
