@@ -26,6 +26,7 @@ class FluxItemsFilamentServiceProvider extends PluginServiceProvider
         ReceiveMethodResource::class,
         ReturnMethodResource::class,
         PromotionGroupResource::class,
+        PropertyR::class,
     ];
 
 
