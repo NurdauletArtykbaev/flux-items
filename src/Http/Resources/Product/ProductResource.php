@@ -55,6 +55,13 @@ class ProductResource extends JsonResource
             'old_price' => $this->when(!$isItemTypeRent, fn() => (int) $this->old_price),
             'cities' => CitiesResource::collection($this->whenLoaded('cities')),
             'type_raw' => $itemType,
+            'status_raw' => $this->whenHas('status', function () {
+                return $this->status;
+            }),
+            'status' => $this->whenHas('status', function () {
+                return ItemHelper::STATUSES[$this->status] ?? ItemHelper::STATUS_AVAILABLE;
+            }),
+            'is_active' => $this->is_active,
             'created_at' => $this?->created_at->format('d.m.Y'),
             'type' => ItemHelper::TYPES[$itemType],
         ];

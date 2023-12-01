@@ -76,6 +76,12 @@ class Item extends Model
         return false;
     }
 
+    public function properties()
+    {
+        return $this->belongsToMany(Property::class, ItemProperty::class, 'item_id', 'property_id')
+            ->withPivot('value_id', 'custom_value');
+    }
+
     public function description(): Attribute
     {
         return Attribute::make(

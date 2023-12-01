@@ -2,9 +2,6 @@
 
 
 return [
-    'table_names'=> [
-        'item' => 'items',
-    ],
     'models' => [
         'promotion_group' => \Nurdaulet\FluxItems\Models\PromotionGroup::class,
         'item' => \Nurdaulet\FluxItems\Models\Item::class,
@@ -24,6 +21,8 @@ return [
         'rent_type_item' => \Nurdaulet\FluxItems\Models\RentTypeItem::class,
         'rent_item_price' => \Nurdaulet\FluxItems\Models\RentItemPrice::class,
         'cart' => \Nurdaulet\FluxItems\Models\Cart::class,
+        'value' => \Nurdaulet\FluxItems\Models\Value::class,
+        'property' => \Nurdaulet\FluxItems\Models\Property::class,
         'cart_item' => \Nurdaulet\FluxItems\Models\CartItem::class,
         'user_address' => \Nurdaulet\FluxItems\Models\UserAddress::class,
     ],
@@ -35,6 +34,7 @@ return [
         'site_items_base_url' => "https://",
         'use_filament_admin_panel' => true,
         'use_list_items_count' => false,
+        'is_enabled_item_property' => true,
         'cache_expiration' => 269746,
         'use_roles' => false
     ],

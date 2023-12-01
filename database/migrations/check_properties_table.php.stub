@@ -1,0 +1,68 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+use Nurdaulet\FluxItems\Helpers\PropertyHelper;
+
+return new class extends Migration {
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        if (Schema::hasTable('properties')) {
+            $this->checkColumns();
+        } else {
+            Schema::create('properties', function (Blueprint $table) {
+                $table->id();
+                $table->text('name')->nullable();
+                $table->text('description')->nullable();
+                $table->tinyInteger("input_type")->default(PropertyHelper::DEFAULT_INPUT_TYPE);
+                $table->boolean('is_active')->default(false);
+                $table->softDeletes();
+                $table->timestamps();
+            });
+        }
+    }
+
+    public function checkColumns()
+    {
+        if (!Schema::hasColumn('properties', 'name')) {
+            Schema::table('properties', function (Blueprint $table) {
+                $table->text('name')->nullable();
+            });
+        }
+        if (!Schema::hasColumn('properties', 'description')) {
+            Schema::table('properties', function (Blueprint $table) {
+                $table->text('description')->nullable();
+
+            });
+        }
+        if (!Schema::hasColumn('properties', 'input_type')) {
+            Schema::table('properties', function (Blueprint $table) {
+                $table->tinyInteger("input_type")->default(PropertyHelper::DEFAULT_INPUT_TYPE);
+
+            });
+        }
+        if (!Schema::hasColumn('properties', 'is_active')) {
+            Schema::table('properties', function (Blueprint $table) {
+                $table->boolean('is_active')->default(false);
+                $table->softDeletes();
+            });
+        }
+        if (!Schema::hasColumn('properties', 'deleted_at')) {
+            Schema::table('properties', function (Blueprint $table) {
+                $table->softDeletes();
+            });
+        }
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('properties');
+    }
+};

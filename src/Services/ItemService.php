@@ -103,12 +103,14 @@ class ItemService
             } else {
                 $receive_method = config('flux-items.models.receive_method')::where('name->ru', 'like', "Самовывоз")->first();
             }
-            $receive_method->pivot = [
-                'item_id' => $item->id,
-                'id' => $receive_method->id,
-                'delivery_price' => 0
-            ];
-            $item->receiveMethods[0] = $receive_method;
+            if ($receive_method?->id) {
+                $receive_method->pivot = [
+                    'item_id' => $item->id,
+                    'id' => $receive_method->id,
+                    'delivery_price' => 0
+                ];
+                $item->receiveMethods[0] = $receive_method;
+            }
         }
 
         $item->viewHistory()->firstOrCreate();

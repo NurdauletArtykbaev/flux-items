@@ -8,10 +8,9 @@ class ItemHelper
     const TYPE_RENT = 1;
     const TYPE_SELL = 2;
 
-    const STATUS_ACTIVE = 1;
-    const STATUS_NOT_ACTIVE = 2;
-    const STATUS_OUT_STOCK = 3;
-    const STATUS_SOLD = 4;
+    const STATUS_AVAILABLE = 1;
+    const STATUS_OUT_STOCK = 2;
+    const STATUS_SOLD = 3;
 
     const TYPES = [
          self::TYPE_RENT => 'rent',
@@ -19,8 +18,7 @@ class ItemHelper
     ];
 
     const STATUSES = [
-         self::STATUS_ACTIVE => 'active',
-         self::STATUS_NOT_ACTIVE => 'not_active',
+         self::STATUS_AVAILABLE => 'available',
          self::STATUS_OUT_STOCK => 'out_stock',
          self::STATUS_SOLD => 'sold',
     ];

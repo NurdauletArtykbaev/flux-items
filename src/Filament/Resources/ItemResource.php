@@ -241,17 +241,23 @@ class ItemResource extends Resource
     public static function getRelations(): array
     {
         if (config('flux-items.options.is_rent_daily')) {
-            return [
+            $data =  [
                 RelationManagers\ImagesRelationManager::class,
                 RelationManagers\ReceiveMethodsRelationManager::class,
                 RelationManagers\RentItemPricesRelationManager::class,
             ];
+        } else {
+            $data =  [
+                RelationManagers\ImagesRelationManager::class,
+                RelationManagers\ReceiveMethodsRelationManager::class,
+                RelationManagers\RentalDayTypesRelationManager::class,
+            ];
         }
-        return [
-            RelationManagers\ImagesRelationManager::class,
-            RelationManagers\ReceiveMethodsRelationManager::class,
-            RelationManagers\RentalDayTypesRelationManager::class,
-        ];
+
+        if (config('flux-items.options.is_enabled_item_property')) {
+            $data[] = RelationManagers\PropertyRelationManager::class;
+        }
+        return $data;
     }
 
     public static function getPages(): array

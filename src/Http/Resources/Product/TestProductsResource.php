@@ -39,6 +39,13 @@ class TestProductsResource extends JsonResource
             'is_favorite' => $this->when(isset($this->is_favorite), function () {
                 return $this->is_favorite;
             }),
+            'status_raw' => $this->whenHas('status', function () {
+                return $this->status;
+            }),
+            'status' => $this->whenHas('status', function () {
+                return ItemHelper::STATUSES[$this->status] ?? ItemHelper::STATUS_AVAILABLE;
+            }),
+            'is_active' => $this->is_active,
             'images' => ProductImagesResource::collection($this->whenLoaded('images')),
             'user' => new ProductsUserResource($this->whenLoaded('user')),
             'view_history' => new ProductViewHistoryResource($this->whenLoaded('viewHistory')),

@@ -47,7 +47,7 @@ class ItemRepository
 
         $query = config('flux-items.models.item')::select('items.id', 'items.name', 'items.slug',
             'items.is_hit', 'items.is_busy', 'items.is_required_confirm', 'items.user_id',
-            'items.type', 'items.price', 'items.old_price',
+            'items.type', 'items.price', 'items.old_price', 'items.status', 'items.is_active',
         );
 
 
