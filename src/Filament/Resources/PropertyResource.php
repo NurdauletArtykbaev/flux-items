@@ -2,14 +2,14 @@
 
 namespace Nurdaulet\FluxItems\Filament\Resources;
 
-use App\Filament\Resources\PropertyResource\Pages;
-use App\Filament\Resources\PropertyResource\RelationManagers\ValueRelationManager;
+use Nurdaulet\FluxItems\Filament\Resources\PropertyResource\Pages;
 use Filament\Forms;
 use Filament\Resources\Concerns\Translatable;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
+use Nurdaulet\FluxItems\Filament\Resources\PropertyResource\RelationManagers\ValueRelationManager;
 use Nurdaulet\FluxItems\Models\Property;
 
 class PropertyResource extends Resource
