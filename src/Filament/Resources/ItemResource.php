@@ -115,7 +115,7 @@ class ItemResource extends Resource
                     ->label(trans('admin.is_busy')),
                 Forms\Components\Toggle::make('is_hit')
                     ->label(trans('admin.hit')),
-                Forms\Components\Toggle::make('status')
+                Forms\Components\Toggle::make('is_active')
                     ->required()
                     ->label(trans('admin.is_active')),
             ]);
@@ -135,7 +135,7 @@ class ItemResource extends Resource
                     ->sortable()
                     ->searchable()
                     ->label(trans('admin.name')),
-                Tables\Columns\BooleanColumn::make('status')->label(trans('admin.status')),
+                Tables\Columns\BooleanColumn::make('is_active')->label(trans('admin.is_active')),
                 Tables\Columns\BooleanColumn::make('is_hit')->label(trans('admin.hit')),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()->label(trans('admin.created_at')),

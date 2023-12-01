@@ -5,6 +5,7 @@ namespace Nurdaulet\FluxItems\Filters;
 use Exception;
 use Illuminate\Support\Facades\Cache;
 use Nurdaulet\FluxCatalog\Repositories\CatalogRepository;
+use Nurdaulet\FluxItems\Helpers\ItemHelper;
 
 class ItemFilter extends ModelFilter
 {
@@ -22,6 +23,20 @@ class ItemFilter extends ModelFilter
             return $this;
         }
         return $this->builder->where('items.is_hit', 1);
+    }
+
+    public function type($value)
+    {
+        if (empty($value)) {
+            return $this;
+        }
+        $type = null;
+        foreach (ItemHelper::TYPES as $key => $itemType) {
+            if ($itemType == $value) {
+                $type = $key;
+            }
+        }
+        return $this->builder->where('items.type', $type);
     }
 
     public function is_required_deposit($value)

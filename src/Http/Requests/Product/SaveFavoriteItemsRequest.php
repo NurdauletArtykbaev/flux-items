@@ -15,7 +15,7 @@ class SaveFavoriteItemsRequest extends FormRequest
     public function rules()
     {
         return [
-            'ids' => 'required|array'
+            'ids' => 'nullable|array'
         ];
     }
 }

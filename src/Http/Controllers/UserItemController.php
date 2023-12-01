@@ -63,9 +63,11 @@ class UserItemController
 
         return TestProductsResource::collection($items)
             ->additional([
-                'items_count' => $activeItemsCount + $deactiveItemsCount,
-                'active_items_count' => $activeItemsCount,
-                'deactive_items_count' => $deactiveItemsCount,
+                'count' => [
+                    'total' =>  $activeItemsCount + $deactiveItemsCount,
+                    'active' =>  $activeItemsCount,
+                    'deactive' =>  $deactiveItemsCount
+                ],
             ]);
     }
 
