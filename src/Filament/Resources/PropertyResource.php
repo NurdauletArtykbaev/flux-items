@@ -10,6 +10,7 @@ use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
 use Nurdaulet\FluxItems\Filament\Resources\PropertyResource\RelationManagers\ValueRelationManager;
+use Nurdaulet\FluxItems\Helpers\PropertyHelper;
 use Nurdaulet\FluxItems\Models\Property;
 
 class PropertyResource extends Resource
@@ -37,6 +38,10 @@ class PropertyResource extends Resource
                     ->label(trans('admin.name')),
                 Forms\Components\Textarea::make('description')
                     ->label(trans('admin.description'))
+                ->rows(10)->cols(10),
+                Forms\Components\Select::make('input_type')
+                    ->options(PropertyHelper::getTypes())
+                    ->label(trans('admin.input_type'))
                 ->rows(10)->cols(10),
                 Forms\Components\Toggle::make('is_active')
                     ->required()

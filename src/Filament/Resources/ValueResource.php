@@ -35,7 +35,6 @@ class ValueResource extends Resource
                     ->required()
                     ->label(trans('admin.value')),
                 Forms\Components\TextInput::make('description')
-                    ->required()
                     ->label(trans('admin.description')),
                 Forms\Components\Toggle::make('is_active')
                     ->required()
