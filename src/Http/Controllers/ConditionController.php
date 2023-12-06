@@ -3,6 +3,7 @@
 namespace Nurdaulet\FluxItems\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Nurdaulet\FluxItems\Http\Resources\ConditionsResource;
 class ConditionController
 {
