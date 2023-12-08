@@ -41,8 +41,7 @@ class PropertyResource extends Resource
                 ->rows(10)->cols(10),
                 Forms\Components\Select::make('input_type')
                     ->options(PropertyHelper::getTypes())
-                    ->label(trans('admin.input_type'))
-                ->rows(10)->cols(10),
+                    ->label(trans('admin.input_type')),
                 Forms\Components\Toggle::make('is_active')
                     ->required()
                     ->label(trans('admin.is_active'))
