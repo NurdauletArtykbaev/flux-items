@@ -29,9 +29,6 @@
     },
     "extra": {
         "laravel": {
-            "providers": [
-                "Nurdaulet\\FluxItems\\FluxItemsServiceProvider"
-            ],
             "aliases": {
                 "TextConverter": "Nurdaulet\\FluxItems\\Facades\\TextConverter",
                 "StringFormatter": "Nurdaulet\\FluxItems\\Facades\\StringFormatter"

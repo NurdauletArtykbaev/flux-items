@@ -18,7 +18,8 @@ class Cart extends Model
 
     public function items()
     {
-        return $this->belongsToMany(Item::class,CartItem::class)->using(CartItem::class)->withPivot(['quantity','user_address_id','fields'])
+        return $this->belongsToMany(Item::class,CartItem::class)->using(CartItem::class)
+            ->withPivot(['quantity','user_address_id','receive_method_id','fields'])
             ->wherePivotNull('deleted_at');
     }
 

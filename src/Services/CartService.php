@@ -27,7 +27,7 @@ class CartService
     {
         $cart = config('flux-items.models.cart')::where('user_id', $user->id)
             ->with(['paymentMethod', 'items' => function ($query) {
-                return $query->with([ItemHelper::getPriceRelation(), 'images', 'pivot.receiveMethod', 'pivot.userAddress']);
+                return $query->with([ItemHelper::getPriceRelation(), 'images', 'pivot.receiveMethod', 'properties.pivot.value', 'pivot.userAddress']);
             }])
             ->first();
         if (!$cart?->id) {

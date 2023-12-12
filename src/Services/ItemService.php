@@ -86,6 +86,8 @@ class ItemService
             'catalogs',
             'images',
             'condition',
+            'properties',
+            'userAddress',
             'cities',
             'receiveMethods',
             'returnMethods',
@@ -146,6 +148,8 @@ class ItemService
             'condition',
             'protectMethods',
             'viewHistory',
+            'properties',
+            'userAddress',
             'cities'
         ];
         $relations[] = ItemHelper::getPriceRelation();
@@ -298,8 +302,8 @@ class ItemService
             foreach ($data['properties'] as $property) {
                 $propertyIds = [
                     $property['id'] => [
-                        'value_id' => $property?->value_id,
-                        'custom_value' => $property?->custom_value
+                        'value_id' => $property['value_id'] ?? null,
+                        'custom_value' => $propertyx['custom_value'] ?? null
                     ]
                 ];
                 $item->properties()->sync($propertyIds);

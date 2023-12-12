@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class CartItem extends Pivot
 {
     use HasFactory, SoftDeletes;
-    use \Awobaz\Compoships\Compoships;
     protected $fillable = [
         'item_id',
         'quantity',

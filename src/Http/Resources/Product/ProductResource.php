@@ -10,6 +10,7 @@ use Nurdaulet\FluxItems\Http\Resources\ProtectMethodsResource;
 use Nurdaulet\FluxItems\Http\Resources\ReceiveMethodsResource;
 use Nurdaulet\FluxItems\Http\Resources\ReturnMethodsResource;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Nurdaulet\FluxItems\Http\Resources\UserAddressResource;
 
 class ProductResource extends JsonResource
 {
@@ -47,7 +48,10 @@ class ProductResource extends JsonResource
                 ];
             }),
             'properties' => $this->whenLoaded('properties', function () {
-                return $this->properties;
+                return ProductPropertiesResource::collection($this->properties);
+            }),
+            'address' => $this->whenLoaded('userAddress', function () {
+                return new UserAddressResource($this->userAddress);
             }),
             'return_methods' => ReturnMethodsResource::collection($this->whenLoaded('returnMethods')),
             'receive_methods' => ReceiveMethodsResource::collection($this->whenLoaded('receiveMethods')),

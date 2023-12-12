@@ -28,6 +28,10 @@ class TestProductsResource extends JsonResource
             'is_required_confirm' => $this->is_required_confirm,
             'user_id' => $this->user_id,
             'price' => (int)$price,
+            'properties' => $this->whenLoaded('properties', function () {
+                $this->properties->loadMissing('pivot.value');
+                return ProductPropertiesResource::collection($this->properties);
+            }),
             'old_price' => (int)$oldPrice,
             'rent_type' => $this->when($itemType == ItemHelper::TYPE_RENT, function () {
                 $rentType = $this->rentTypes->first();
