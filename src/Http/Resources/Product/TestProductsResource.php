@@ -36,6 +36,7 @@ class TestProductsResource extends JsonResource
             'rent_type' => $this->when($itemType == ItemHelper::TYPE_RENT, function () {
                 $rentType = $this->rentTypes->first();
                 return [
+                    'id' => $rentType?->id,
                     'name' => $rentType?->name,
                     'slug' => $rentType?->slug
                 ];

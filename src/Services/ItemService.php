@@ -299,14 +299,13 @@ class ItemService
             $item->protectMethods()->sync($data['protect_methods']);
         }
         if (isset($data['properties'])) {
+            $item->properties()->detach();
             foreach ($data['properties'] as $property) {
-                $propertyIds = [
-                    $property['id'] => [
-                        'value_id' => $property['value_id'] ?? null,
-                        'custom_value' => $propertyx['custom_value'] ?? null
-                    ]
-                ];
-                $item->properties()->sync($propertyIds);
+
+                $item->properties()->attach($property['id'], [
+                    'value_id' => $property['value_id'] ?? null,
+                    'custom_value' => $propertyx['custom_value'] ?? null
+                ]);
             }
         }
     }
