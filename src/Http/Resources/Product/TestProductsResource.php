@@ -60,7 +60,7 @@ class TestProductsResource extends JsonResource
                 return new UserAddressResource($this->pivot?->userAddress);
             }),
             'user' => new ProductsUserResource($this->whenLoaded('user')),
-            'view_history' => $this->whenLoaded('viewHistory', function () {
+            'view_history' => $this->when($this->whenHas('viewHistory'), function () {
                 return $this->viewHistory ? new ProductViewHistoryResource($this->viewHistory) : [
                     'count' => 0,
                     'view_phone_count' => 0,
@@ -92,6 +92,4 @@ class TestProductsResource extends JsonResource
         }
         return [$price, $oldPrice];
     }
-
-
 }
