@@ -17,6 +17,7 @@ class ProductPropertiesResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'value_id' => $this->pivot->value?->id,
             'value_name' => $this->pivot->value?->value,
             'custom_value' => $this->pivot->custom_value,
         ];
