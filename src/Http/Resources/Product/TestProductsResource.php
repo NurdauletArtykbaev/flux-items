@@ -5,6 +5,7 @@ namespace Nurdaulet\FluxItems\Http\Resources\Product;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Nurdaulet\FluxItems\Helpers\ItemHelper;
 use Nurdaulet\FluxItems\Http\Resources\CitiesResource;
+use Nurdaulet\FluxItems\Http\Resources\UserAddressResource;
 
 class TestProductsResource extends JsonResource
 {
@@ -52,7 +53,12 @@ class TestProductsResource extends JsonResource
             }),
             'is_active' => $this->is_active,
             'images' => ProductImagesResource::collection($this->whenLoaded('images')),
-
+            'address' => $this->whenLoaded('userAddress', function () {
+                return new UserAddressResource($this->userAddress);
+            }),
+            'delivery_address' => $this->whenLoaded('pivot.userAddress', function () {
+                return new UserAddressResource($this->pivot?->userAddress);
+            }),
             'user' => new ProductsUserResource($this->whenLoaded('user')),
             'view_history' => $this->whenLoaded('viewHistory', function () {
                 return $this->viewHistory ? new ProductViewHistoryResource($this->viewHistory) : [

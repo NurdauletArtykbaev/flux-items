@@ -22,7 +22,7 @@ class ProductUserResource extends JsonResource
             'company_name' => $this->company_name,
             'avg_rating' => (int) $this->avg_rating,
             'phone' => $this->phone,
-            'is_verified' => $this->is_verified,
+            'moderation_status' => $this->is_verified,
             'is_identified' => $this->is_identified,
             'avatar_url' => $this->avatar_url,
             'avatar_color' => $this->avatar_color,

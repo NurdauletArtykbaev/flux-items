@@ -21,7 +21,7 @@ class ProductsUserResource extends JsonResource
             'last_name' => $this->last_name,
             'company_name' => $this->company_name,
             'avg_rating' => $this->avg_rating,
-            'is_verified' => $this->is_verified,
+            'moderation_status' => $this->is_verified,
             'is_identified' => $this->is_identified,
             'avatar_url' => $this->avatar_url,
             'avatar_color' => $this->avatar_color,
