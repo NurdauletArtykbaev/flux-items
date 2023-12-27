@@ -68,13 +68,14 @@ class ItemResource extends Resource
                     ->relationship('condition', 'name')
                     ->translateLabel()
                     ->preload()
-                    ->label(trans('admin.items.condition')),
+                    ->label(trans('admin.items.fields.condition')),
                 Forms\Components\Select::make('type')
-                    ->options(\Nurdaulet\FluxItems\Helpers\ItemHelper::getTypes()),
+                    ->label(trans('admin.items.type'))
+            ->options(\Nurdaulet\FluxItems\Helpers\ItemHelper::getTypes()),
                 Forms\Components\TextInput::make('price')
-                    ->numeric()->label(trans('admin.items.sell_price')),
+                    ->numeric()->label(trans('admin.items.fields.sell_price')),
                 Forms\Components\TextInput::make('old_price')
-                    ->label(trans('admin.items.sell_old_price')),
+                    ->label(trans('admin.items.fields.sell_old_price')),
                 Select::make('cities')
                     ->label(trans('admin.city'))
                     ->multiple()

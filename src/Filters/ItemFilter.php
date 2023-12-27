@@ -39,6 +39,17 @@ class ItemFilter extends ModelFilter
         return $this->builder->where('items.type', $type);
     }
 
+    public function type_store($value)
+    {
+        if (empty($value)) {
+            return $this;
+        }
+        if ($value == 'store') {
+            return $this->builder->whereHas('items.user', fn($query) => $query->whereNotNull('company_name'));
+        }
+        return $this->builder->whereHas('items.user', fn($query) => $query->whereNull('company_name'));
+    }
+
     public function is_required_deposit($value)
     {
         if (empty($value)) {
@@ -159,6 +170,51 @@ class ItemFilter extends ModelFilter
         }
         return $this->builder->where('items.id', '<>', $value);
     }
+
+    public function sort_by($value)
+    {
+        if (empty($value)) {
+            return $this;
+        }
+        if ($value == 'price_asc') {
+
+            return $this->builder
+                ->selectSub(function ($query) {
+                    $query->select('price')
+                        ->from('rent_item_prices')
+                        ->whereColumn('item_id', 'items.id')
+                        ->orderBy('price')
+                        ->limit(1);
+                }, 'min_price')
+//            ->whereRaw('min_price> 0')
+                ->groupBy('items.id')
+                ->orderBy('min_price', 'ASC');
+        }
+//        if ($value == 'date_asc') {
+//            return $this->builder->orderBy('impression_sessions.run_date');
+//        }
+//        if ($value == 'date_desc') {
+//            return $this->builder->orderByDesc('impression_sessions.run_date');
+//        }
+        if ($value == 'price_desc') {
+            return $this->builder
+                ->selectSub(function ($query) {
+                    $query->select('price')
+                        ->from('rent_item_prices')
+                        ->whereColumn('item_id', 'items.id')
+                        ->orderBy('price')
+                        ->limit(1);
+                }, 'min_price')
+                ->groupBy('items.id')
+                ->orderBy('min_price', 'DESC');
+        }
+        if ($value == 'date_desc') {
+            return $this->builder->orderBy('items.created_at', 'desc');
+        }
+        return $this->builder->orderBy('items.created_at', 'desc');
+    }
+
+
 
     public function lowest_price($value)
     {
