@@ -16,6 +16,7 @@ class ProductImagesResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'path' => $this->path,
             'full_url' => $this->full_url,
             'webp_full_url' => $this->webp_full_url,
         ];
