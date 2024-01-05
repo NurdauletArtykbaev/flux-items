@@ -41,12 +41,19 @@ Route::prefix('api')->group(function () {
         Route::get('{id}/similar', [ItemController::class, 'similarItems']);
         Route::get('{id}', [ItemController::class, 'show']);
         Route::get('{id}/reviews', [ItemReviewController::class, 'index'])->middleware('auth:sanctum');
+
+
         Route::post('{id}/reviews', [ItemReviewController::class, 'store'])->middleware('auth:sanctum');
         Route::post('{id}/complain', [ComplaintItemController::class, 'store']);
         Route::post('{id}/cart', [CartController::class, 'addToCart'])->middleware('auth:sanctum');
         Route::put('{id}/cart', [CartController::class, 'updateCartItem'])->middleware('auth:sanctum');
         Route::delete('{id}/cart', [CartController::class, 'removeFromCart'])->middleware('auth:sanctum');
     });
+
+    /** Api для сайта */
+    Route::get('rent/{id}', [ItemController::class, 'show']);
+    Route::get('sale/{id}', [ItemController::class, 'show']);
+
 
     Route::group(['prefix' => 'user','middleware' => 'auth:sanctum'], function () {
         Route::get('my-items', [UserItemController::class, 'myItems']);

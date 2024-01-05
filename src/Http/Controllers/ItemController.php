@@ -26,13 +26,14 @@ class ItemController
     public function index(Request $request)
     {
         $filters = $request->input('filters', []);
-        $filters['city_id'] = $request->header('city_id');
+//        $filters['city_id'] = $request->header('city_id');
 
         $items = $this->itemService->getPaginated($filters);
         $maxPrice = isset($filters['with_max_price']) ? $this->itemService->getMaxPrice($filters) : 0;
 
         return TestProductsResource::collection($items)->additional(['max_price' => $maxPrice]);
     }
+
 
 
     public function show($id)

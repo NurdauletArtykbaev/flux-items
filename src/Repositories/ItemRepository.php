@@ -68,7 +68,7 @@ class ItemRepository
 
         DB::statement('SET session sql_log_bin = 0;');
 
-        $products = $query->paginate($filters['per_page'] ?? 20)
+        $products = $query->paginate(request()->input('per_page', 20))
             ->appends(\request()->except('page'));
 
         DB::statement('SET session sql_log_bin = 1;');

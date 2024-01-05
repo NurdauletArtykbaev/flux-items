@@ -190,12 +190,7 @@ class ItemFilter extends ModelFilter
                 ->groupBy('items.id')
                 ->orderBy('min_price', 'ASC');
         }
-//        if ($value == 'date_asc') {
-//            return $this->builder->orderBy('impression_sessions.run_date');
-//        }
-//        if ($value == 'date_desc') {
-//            return $this->builder->orderByDesc('impression_sessions.run_date');
-//        }
+
         if ($value == 'price_desc') {
             return $this->builder
                 ->selectSub(function ($query) {
